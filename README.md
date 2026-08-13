@@ -1,3 +1,4 @@
+# Project-IHC
 ## Información del Proyecto
 - **Materia:** Interacción Hombre-Computadora (IHC)
 - **Tipo de Proyecto:** Aplicación Móvil
@@ -7,4 +8,3 @@
   - Sebastian Cespedes Rodas
 
 ---
-# Project-IHC
