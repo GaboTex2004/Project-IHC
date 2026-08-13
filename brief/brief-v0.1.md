@@ -1,7 +1,7 @@
 
 ## Información del Proyecto
 - **Materia:** Interacción Hombre-Computadora (IHC)
-- **Tipo de Proyecto:** Aplicación Web / Móvil
+- **Tipo de Proyecto:** Aplicación Móvil
 - **Modalidad:** En equipo
 - **Integrantes:**
   - Gabriel Antony Choque Benavides
@@ -9,7 +9,7 @@
 
 ---
 
-## Definición del Reto (Problema Inicial)
+## Definición del Reto 
 
 ### 1. ¿Qué dificultad queremos comprender?
 La baja tasa de éxito y el tiempo prolongado en la localización de mascotas perdidas. Actualmente, la búsqueda se basa en afiches impresos o publicaciones dispersas en redes sociales que se pierden rápidamente en el feed, carecen de filtros de ubicación exactos y dificultan la verificación visual rápida cuando alguien encuentra a un animal en la calle.
