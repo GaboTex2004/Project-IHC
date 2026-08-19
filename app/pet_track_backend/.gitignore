@@ -1,0 +1,15 @@
+# Django
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+
+# Entornos y secretos
+.venv/
+venv/
+.env
+*.env
+
+# Archivos de entorno
+*/media/**/*
