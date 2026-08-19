@@ -1,0 +1,65 @@
+name: pet_track_mobile
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_launcher_icons: ^0.14.4 # para generar los iconos al hacer build en distintas plataformas
+  cupertino_icons: ^1.0.8
+  http: ^1.6.0
+  flutter_dotenv: ^6.0.0 #(Para Variables de entorno .env)
+  go_router: ^17.2.0 # nevegador inferior sencillo
+  shared_preferences: ^2.5.4
+  local_auth: ^2.3.0
+  flutter_secure_storage: ^10.3.1
+  speech_to_text: ^7.3.0 # (Agregar permisos)
+  # openai_dart: ^4.0.1 # libreria para usar el LLM de openai para usar el modelo de OpenRouter 
+  image_picker: ^1.2.1 # (Agregar permisos)
+  dio: ^5.9.2 #(Para peticiones HTTP/HTTPS)
+  get_it: ^9.2.1 #(Para injection de dependencias)
+  file_picker: ^8.1.7 #(Para importar archivos de backup)
+  firebase_core: ^4.7.0 #(Para notificaciones lo necesita firebaes_messaging)
+  firebase_messaging: ^16.2.0 #(Para notificaciones push online + servidor)
+  flutter_local_notifications: ^21.0.0 #(Para notificacione push offline)
+  equatable: ^2.0.8 #(Para comparar objetos de forma profunda o1 == o2)
+  device_info_plus: ^11.5.0 #(Para obtener información detallada del dispositivo)
+  package_info_plus: ^9.0.1 #(Para obtener información detallada de la app, como la version)
+  universal_html: ^2.3.0 #(Para html en dart que funcione en web y mobile)
+  path_provider: ^2.1.5 #(Para guardar archivos descargados en el dispositivo)
+  provider: ^6.1.5+1 #(Para escuchar proveedores)
+  skeletonizer: ^2.1.3 #(Para skeletons en vistas)
+  # qr_flutter: ^4.1.0 #(Para generar QR reales)
+  # mobile_scanner: ^7.2.0 #(Para escanear QR con la cámara)
+  # timezone: ^0.11.0 #(Para obtener la hora)
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+
+flutter_launcher_icons:
+  image_path: "assets/logo.jpg" 
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  web:
+    generate: true
+    image_path: "assets/logo.jpg"
+  windows:
+    generate: true
+    image_path: "assets/logo.jpg"
+  macos:
+    generate: true
+    image_path: "assets/logo.jpg"
+  linux:
+    generate: true
+    image_path: "assets/logo.jpg"
