@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'drf_spectacular',
     'corsheaders',
     'pets',
 ]
@@ -62,7 +63,7 @@ DATABASES = {
         'USER': config('DB_USER', default='postgres'),
         'PASSWORD': config('DB_PASSWORD', default='postgres'),
         'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default='5432'),
+        'PORT': config('DB_PORT', default='55432'),
     }
 }
 
@@ -94,12 +95,18 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 CORS_ALLOW_ALL_ORIGINS = DEBUG
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='http://localhost:3000', cast=Csv())
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Pet Track API',
+    'DESCRIPTION': 'API for Pet Track application',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
 
 DJANGO_SUPERUSER_USERNAME = config('DJANGO_SUPERUSER_USERNAME', default='colegio')
 DJANGO_SUPERUSER_EMAIL = config('DJANGO_SUPERUSER_EMAIL', default='colegio@gmail.com')
