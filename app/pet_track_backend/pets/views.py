@@ -1,18 +1,9 @@
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from django.db import connection
+# pets/views.py
+from rest_framework import viewsets
+from .models import LostPetReport
+from .serializers import LostPetReportSerializer
 
-
-@api_view(['GET'])
-def health_check(request):
-    try:
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT 1")
-        db_status = "connected"
-    except Exception as e:
-        db_status = f"error: {str(e)}"
-
-    return Response({
-        "status": "ok",
-        "database": db_status
-    })
+class LostPetReportViewSet(viewsets.ModelViewSet):
+    # Traemos todos los reportes, ordenados por el más reciente primero
+    queryset = LostPetReport.objects.all().order_by('-created_at')
+    serializer_class = LostPetReportSerializer

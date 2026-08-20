@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pet Track - Mascotas Perdidas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#dde9ff",
+                        "on-surface-variant": "#3f4a3c",
+                        "surface-container-low": "#eff4ff",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed-variant": "#005313",
+                        "tertiary-fixed-dim": "#9ecaff",
+                        "background": "#f8f9ff",
+                        "tertiary-container": "#33a0fe",
+                        "surface-variant": "#d5e3fd",
+                        "on-error": "#ffffff",
+                        "outline": "#6f7a6b",
+                        "surface-dim": "#ccdbf4",
+                        "surface-tint": "#006e1c",
+                        "on-primary-fixed": "#002204",
+                        "primary-fixed": "#94f990",
+                        "tertiary": "#0061a4",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#001d36",
+                        "on-surface": "#0d1c2f",
+                        "tertiary-fixed": "#d1e4ff",
+                        "secondary": "#8b5000",
+                        "on-tertiary-fixed-variant": "#00497d",
+                        "primary": "#006e1c",
+                        "on-secondary-fixed": "#2c1600",
+                        "secondary-fixed": "#ffdcbe",
+                        "on-secondary-container": "#653900",
+                        "surface-bright": "#f8f9ff",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#ffb870",
+                        "secondary-container": "#ff9800",
+                        "on-tertiary-container": "#00355d",
+                        "primary-container": "#4caf50",
+                        "on-secondary-fixed-variant": "#693c00",
+                        "inverse-on-surface": "#ebf1ff",
+                        "on-primary-container": "#003c0b",
+                        "inverse-surface": "#233144",
+                        "primary-fixed-dim": "#78dc77",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#e6eeff",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#0d1c2f",
+                        "surface": "#f8f9ff",
+                        "inverse-primary": "#78dc77",
+                        "surface-container-highest": "#d5e3fd",
+                        "outline-variant": "#becab9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "md": "16px",
+                        "gutter": "16px",
+                        "container-margin": "20px",
+                        "sm": "12px",
+                        "xs": "4px",
+                        "base": "8px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-xl-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["22px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-xl-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background antialiased min-h-screen flex flex-col font-body-md">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-40 bg-surface dark:bg-surface-dim shadow-sm flex justify-between items-center px-container-margin py-md">
+<div class="flex items-center gap-xs text-primary dark:text-primary-fixed">
+<span class="material-symbols-outlined text-[24px]">pets</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary dark:text-primary-fixed">Pet Track</span>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex flex-col pb-24 pt-md px-container-margin md:max-w-2xl md:mx-auto w-full">
+<div class="mb-lg">
+<h1 class="font-headline-xl-mobile text-headline-xl-mobile text-on-surface mb-xs">Mascotas Perdidas</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Ayúdanos a encontrar a estos compañeros peludos en tu área.</p>
+</div>
+<!-- Feed List -->
+<div class="flex flex-col gap-md">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(51,65,85,0.05)] overflow-hidden border border-outline-variant/30 flex flex-col">
+<div class="relative h-48 w-full">
+<img class="w-full h-full object-cover" data-alt="A medium shot of a golden retriever dog standing on a suburban sidewalk, looking slightly confused but friendly. The lighting is soft afternoon daylight, casting gentle shadows. The overall mood is hopeful but urgent. The style is modern, soft tactile UI photography with a bright, clean aesthetic emphasizing high legibility and calm reassurance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0Md8AGG1Fdmqc0I1_UR_KsNDeNAkUi6xT5TkBAjU1se5nk_NM0GbRK8CMy6vuruy5Cp42OiEB4NirW58G67NNG0PhZ2BRVkj2rSsfow9xflWKyrt0NcaC51eH-lwgAmLuYsguznkIWR6iP7ha2SkO_9nzn6Km5xSGdcAZm4CxNLuw-F7R-HkPCaIkKxma0HnDkKLpJYNFwy2FaTw6bHiPm6uZyyqF6h57C6WbdBUj08ohEZ9S0_-Z"/>
+<div class="absolute top-sm right-sm bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-md text-label-md uppercase shadow-sm">
+                        Perdido
+                    </div>
+</div>
+<div class="p-md flex flex-col gap-xs">
+<div class="flex justify-between items-start">
+<h2 class="font-headline-md text-headline-md text-on-surface">Max</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container py-1 px-2 rounded-md">Hace 2 horas</span>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant mt-sm">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span class="font-body-md text-body-md text-sm">Fecha: 12 Octubre 2023</span>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span class="font-body-md text-body-md text-sm">Ubicación: Parque Central, Zona 4</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(51,65,85,0.05)] overflow-hidden border border-outline-variant/30 flex flex-col">
+<div class="relative h-48 w-full">
+<img class="w-full h-full object-cover" data-alt="A close up photo of a fluffy black and white tuxedo cat resting on a brick wall. The lighting is overcast, giving a soft, diffuse look. The mood is calm but slightly melancholic. The visual style aligns with a modern corporate aesthetic, using soft lighting and clean composition to evoke empathy and care." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxbgvk2Jc4yRKp5_2_PiLu_EpQ4FEs1Nft6TUznW2dI-QxFxr17a0MmrPlzZkqebIj5PDJR_KMSewcV7PDg3WprjhO63Nd0_RFxKeH-ShgkcvVLk8krW7Jzr92mkf5NkUMKDFftqyZY7nNObN8pFsVQPZ2M-9UPKJfWGNEM7S06RM46chZj6mBrJ6Ek90btBSpCNdUF73S97J6xqYnQAb36AQeNLPfDrrvRXk9mwpYji-8Ge1BMAPS"/>
+<div class="absolute top-sm right-sm bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-md text-label-md uppercase shadow-sm">
+                        Perdido
+                    </div>
+</div>
+<div class="p-md flex flex-col gap-xs">
+<div class="flex justify-between items-start">
+<h2 class="font-headline-md text-headline-md text-on-surface">Luna</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container py-1 px-2 rounded-md">Ayer</span>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant mt-sm">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span class="font-body-md text-body-md text-sm">Fecha: 11 Octubre 2023</span>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span class="font-body-md text-body-md text-sm">Ubicación: Av. Siempre Viva 742</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(51,65,85,0.05)] overflow-hidden border border-outline-variant/30 flex flex-col">
+<div class="relative h-48 w-full">
+<img class="w-full h-full object-cover" data-alt="A bright, clear photo of a small beagle mix puppy sitting in a grassy field. The morning sun provides warm, directional lighting. The mood is endearing and urgent. The image fits a modern, optimistic utility design language, with clear focus and soft tactile elements to reduce anxiety and promote action." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHfcpHr18YPANKuZ0DtmtAebsAhWN1vBfSYZuCrnaZmz6QU8S_Sq-xpU-oI5cDNLSfdHLcRjS4FQkoyDQvRNTgWFJLd0Qjsmk0L89hXHwGgI4iygoQXDTAWL791uIy72tmYn9C3Bqudq6zoMADUd-4nGfPpP6Wgyt7N5Lnq_8OYslFxOHuLDyrBWWN8oo7iEWJ-yHT4RyTwFqzJNjpg5bmtOZt_pVsY3rb5nKObl7TWKyFxhhE8GPp"/>
+<div class="absolute top-sm right-sm bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-md text-label-md uppercase shadow-sm">
+                        Encontrado
+                    </div>
+</div>
+<div class="p-md flex flex-col gap-xs">
+<div class="flex justify-between items-start">
+<h2 class="font-headline-md text-headline-md text-on-surface">Rocky (Posible)</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container py-1 px-2 rounded-md">Hace 3 días</span>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant mt-sm">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span class="font-body-md text-body-md text-sm">Fecha: 09 Octubre 2023</span>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span class="font-body-md text-body-md text-sm">Ubicación: Cerca del supermercado Norte</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button (FAB) -->
+<button class="fixed bottom-24 right-container-margin md:right-auto md:left-1/2 md:ml-[300px] bg-secondary-container text-on-secondary-container h-14 w-14 rounded-2xl shadow-[0px_8px_20px_rgba(51,65,85,0.12)] flex items-center justify-center hover:bg-secondary hover:text-on-secondary transition-all active:scale-90 duration-200 z-50">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl bg-surface dark:bg-surface-container-lowest shadow-[0px_-4px_12px_rgba(51,65,85,0.05)] md:hidden">
+<div class="flex justify-around items-center h-16 w-full px-4">
+<!-- Active Tab -->
+<button class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-full px-4 py-1.5 active:scale-90 duration-200 hover:bg-surface-container-highest transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</button>
+<!-- Inactive Tabs -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1.5 active:scale-90 duration-200 hover:bg-surface-container-highest transition-all">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-label-sm text-label-sm mt-1">Report</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-4 py-1.5 active:scale-90 duration-200 hover:bg-surface-container-highest transition-all">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm mt-1">Profile</span>
+</button>
+</div>
+</nav>
+</body></html>
