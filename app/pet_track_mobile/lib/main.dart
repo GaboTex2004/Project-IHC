@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'features/lost_pets/presentation/screens/home_dashboard_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'injection/injection.dart' as di;
+import 'theme/app_theme.dart';
+import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/auth/domain/usecases/login_usecase.dart';
+import 'features/auth/domain/usecases/register_usecase.dart';
+import 'features/auth/presentation/pages/login_page.dart';
+import 'features/lost_pets/presentation/bloc/lost_pet_bloc.dart';
+import 'features/lost_pets/domain/usecases/list_reports_usecase.dart';
+import 'features/lost_pets/domain/usecases/create_report_usecase.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Configuración de la barra de estado del sistema (transparente con iconos legibles)
+  await dotenv.load(fileName: '.env');
+  di.init();
+
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -21,29 +32,27 @@ class PetTrackApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const primaryColor = Color(0xFF6C63FF);
-
-    return MaterialApp(
-      title: 'Pet Track',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: primaryColor,
-          primary: primaryColor,
-          surface: const Color(0xFFF8F9FE),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => AuthBloc(
+            loginUseCase: di.sl<LoginUseCase>(),
+            registerUseCase: di.sl<RegisterUseCase>(),
+          ),
         ),
-        scaffoldBackgroundColor: const Color(0xFFF8F9FE),
-        fontFamily: 'Roboto',
-        appBarTheme: const AppBarTheme(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          foregroundColor: Color(0xFF1E293B),
-          centerTitle: false,
+        BlocProvider(
+          create: (_) => LostPetBloc(
+            listReportsUseCase: di.sl<ListReportsUseCase>(),
+            createReportUseCase: di.sl<CreateReportUseCase>(),
+          ),
         ),
+      ],
+      child: MaterialApp(
+        title: dotenv.env['SYSTEM_NAME'] ?? 'Pet Track',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        home: const LoginPage(),
       ),
-      // Navegación principal al Home Dashboard inspirado en Stitch UI
-      home: const HomeDashboardScreen(),
     );
   }
 }
