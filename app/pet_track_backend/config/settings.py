@@ -3,22 +3,24 @@ Django settings for config project.
 """
 import os
 from pathlib import Path
-from decouple import config, Csv
-from dotenv import load_dotenv
+import environ
+from .storage import INSTALLED_APPS_CLOUDINARY, CLOUDINARY_STORAGE, DEFAULT_FILE_STORAGE, STATICFILES_STORAGE
+
+env = environ.Env(
+    DEBUG=(bool, True),
+    ALLOWED_HOSTS=(list, ['localhost', '127.0.0.1']),
+    CORS_ALLOWED_ORIGINS=(list, ['http://localhost:3000']),
+)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-^jsibgh7^-idv5884uui9@-3ctw861tldq-!)^nop7=354^)jn')
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-DEBUG = config('DEBUG', default=True, cast=bool)
+SECRET_KEY = env('SECRET_KEY', default='django-insecure-^jsibgh7^-idv5884uui9@-3ctw861tldq-!)^nop7=354^)jn')
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
+DEBUG = env('DEBUG')
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Cargar las variables del archivo .env
-load_dotenv(os.path.join(BASE_DIR, '.env'))
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -30,10 +32,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
     'corsheaders',
-    'cloudinary',
-    'cloudinary_storage',
     'pets',
-]
+] + INSTALLED_APPS_CLOUDINARY
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -69,11 +69,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME', default='pet_track_db'),
-        'USER': config('DB_USER', default='postgres'),
-        'PASSWORD': config('DB_PASSWORD', default='postgres'),
-        'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default='55432'),
+        'NAME': env('DB_NAME', default='pet_track_db'),
+        'USER': env('DB_USER', default='postgres'),
+        'PASSWORD': env('DB_PASSWORD', default='postgres'),
+        'HOST': env('DB_HOST', default='localhost'),
+        'PORT': env('DB_PORT', default='5432'),
     }
 }
 
@@ -92,12 +92,13 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_FILE_STORAGE = DEFAULT_FILE_STORAGE
+STATICFILES_STORAGE = STATICFILES_STORAGE
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -111,7 +112,7 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = DEBUG
-CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='http://localhost:3000', cast=Csv())
+CORS_ALLOWED_ORIGINS = env('CORS_ALLOWED_ORIGINS')
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Pet Track API',
@@ -119,13 +120,9 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-}
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-DJANGO_SUPERUSER_USERNAME = config('DJANGO_SUPERUSER_USERNAME', default='colegio')
-DJANGO_SUPERUSER_EMAIL = config('DJANGO_SUPERUSER_EMAIL', default='colegio@gmail.com')
-DJANGO_SUPERUSER_PASSWORD = config('DJANGO_SUPERUSER_PASSWORD', default='password')
+CLOUDINARY_STORAGE = CLOUDINARY_STORAGE
+
+DJANGO_SUPERUSER_USERNAME = env('DJANGO_SUPERUSER_USERNAME', default='colegio')
+DJANGO_SUPERUSER_EMAIL = env('DJANGO_SUPERUSER_EMAIL', default='colegio@gmail.com')
+DJANGO_SUPERUSER_PASSWORD = env('DJANGO_SUPERUSER_PASSWORD', default='password')

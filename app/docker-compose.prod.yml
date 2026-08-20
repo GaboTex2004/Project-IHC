@@ -27,7 +27,6 @@ services:
       DB_HOST: pet_track_db
       DB_PORT: 5432
     volumes:
-      - static-files:/app/staticfiles
       - media-files:/app/media
     depends_on:
       pet_track_db:
@@ -36,14 +35,14 @@ services:
       - mi-red
 
   nginx:
-    image: nginx:alpine
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
     restart: unless-stopped
     ports:
       - '80:80'
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - static-files:/app/staticfiles
-      - media-files:/app/media
+      - media-files:/app/media:ro
     depends_on:
       - pet_track_backend
     networks:
@@ -51,7 +50,6 @@ services:
 
 volumes:
   postgres-prod-data:
-  static-files:
   media-files:
 
 networks:
