@@ -1,6 +1,6 @@
 name: pet_track_mobile
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0+1
 
 environment:
@@ -18,7 +18,7 @@ dependencies:
   local_auth: ^2.3.0
   flutter_secure_storage: ^10.3.1
   speech_to_text: ^7.3.0 # (Agregar permisos)
-  # openai_dart: ^4.0.1 # libreria para usar el LLM de openai para usar el modelo de OpenRouter 
+  # openai_dart: ^4.0.1 # libreria para usar el LLM de openai para usar el modelo de OpenRouter
   image_picker: ^1.2.1 # (Agregar permisos)
   dio: ^5.9.2 #(Para peticiones HTTP/HTTPS)
   get_it: ^9.2.1 #(Para injection de dependencias)
@@ -45,9 +45,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-
 flutter_launcher_icons:
-  image_path: "assets/logo.jpg" 
+  image_path: "assets/logo.jpg"
   android: true
   ios: true
   remove_alpha_ios: true

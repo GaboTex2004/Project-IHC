@@ -1,9 +1,10 @@
 """
 Django settings for config project.
 """
-
+import os
 from pathlib import Path
 from decouple import config, Csv
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -12,6 +13,12 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-^jsibgh7^-idv5884uui9
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Cargar las variables del archivo .env
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -23,6 +30,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
     'corsheaders',
+    'cloudinary',
+    'cloudinary_storage',
     'pets',
 ]
 
@@ -107,6 +116,12 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 DJANGO_SUPERUSER_USERNAME = config('DJANGO_SUPERUSER_USERNAME', default='colegio')
 DJANGO_SUPERUSER_EMAIL = config('DJANGO_SUPERUSER_EMAIL', default='colegio@gmail.com')
