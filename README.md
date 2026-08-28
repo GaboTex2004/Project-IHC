@@ -7,4 +7,7 @@
   - Gabriel Antony Choque Benavides
   - Sebastian Cespedes Rodas
 
+
 ---
+
+Los documentos hechos en el proyecto estan en la carpeta `docs`
