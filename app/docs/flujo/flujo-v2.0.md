@@ -1,4 +1,4 @@
-# Flujo v0.2 — Registrar una mascota perdida
+# Flujo v0.2 — Registro
 
 ## Tarea
 
