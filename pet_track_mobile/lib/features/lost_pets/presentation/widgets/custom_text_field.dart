@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../theme/app_colors.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
@@ -28,7 +29,10 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const primaryColor = Color(0xFF6C63FF);
+    final effectiveKeyboardType =
+        maxLines > 1 ? TextInputType.multiline : keyboardType;
+    final effectiveTextInputAction =
+        maxLines > 1 ? TextInputAction.newline : textInputAction;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +44,7 @@ class CustomTextField extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF334155),
+                color: AppColors.textPrimary,
               ),
             ),
             if (isRequired)
@@ -57,8 +61,8 @@ class CustomTextField extends StatelessWidget {
         TextFormField(
           controller: controller,
           maxLines: maxLines,
-          keyboardType: keyboardType,
-          textInputAction: textInputAction,
+          keyboardType: effectiveKeyboardType,
+          textInputAction: effectiveTextInputAction,
           validator: validator ??
               (isRequired
                   ? (val) {
@@ -70,7 +74,7 @@ class CustomTextField extends StatelessWidget {
                   : null),
           style: const TextStyle(
             fontSize: 14,
-            color: Color(0xFF1E293B),
+            color: AppColors.textPrimary,
             fontWeight: FontWeight.w500,
           ),
           decoration: InputDecoration(
@@ -86,13 +90,13 @@ class CustomTextField extends StatelessWidget {
               ),
               child: Icon(
                 prefixIcon,
-                color: primaryColor.withValues(alpha: 0.8),
+                color: AppColors.primary,
                 size: 22,
               ),
             ),
             suffixIcon: suffixIcon,
             filled: true,
-            fillColor: const Color(0xFFF8F9FE),
+            fillColor: AppColors.inputFill,
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 14,
@@ -114,7 +118,7 @@ class CustomTextField extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
               borderSide: const BorderSide(
-                color: primaryColor,
+                color: AppColors.primary,
                 width: 1.8,
               ),
             ),

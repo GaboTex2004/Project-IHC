@@ -42,7 +42,7 @@ class LostPetBloc extends Bloc<LostPetEvent, LostPetState> {
     
     result.fold(
       (failure) => emit(LostPetError(message: failure.message)),
-      (_) => add(const LoadReports()),
+      (report) => emit(LostPetCreated(report: report)),
     );
   }
 }

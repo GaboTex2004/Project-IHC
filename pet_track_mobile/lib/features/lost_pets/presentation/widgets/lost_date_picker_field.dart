@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import '../../../../theme/app_colors.dart';
 
 class LostDatePickerField extends StatelessWidget {
   final DateTime? selectedDate;
   final ValueChanged<DateTime> onDateSelected;
+  final String label;
+  final String hint;
 
   const LostDatePickerField({
     super.key,
     required this.selectedDate,
     required this.onDateSelected,
+    this.label = 'Fecha de pérdida',
+    this.hint = 'Selecciona la fecha',
   });
 
   Future<void> _selectDate(BuildContext context) async {
@@ -24,7 +29,7 @@ class LostDatePickerField extends StatelessWidget {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: Color(0xFF6C63FF),
+              primary: AppColors.primary,
               onPrimary: Colors.white,
               onSurface: Color(0xFF1E293B),
             ),
@@ -48,22 +53,20 @@ class LostDatePickerField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const primaryColor = Color(0xFF6C63FF);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Row(
+        Row(
           children: [
             Text(
-              'Fecha de Pérdida',
-              style: TextStyle(
+              label,
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF334155),
+                color: AppColors.textPrimary,
               ),
             ),
-            Text(
+            const Text(
               ' *',
               style: TextStyle(
                 color: Colors.redAccent,
@@ -79,7 +82,7 @@ class LostDatePickerField extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             decoration: BoxDecoration(
-              color: const Color(0xFFF8F9FE),
+              color: AppColors.inputFill,
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
                 color: Colors.grey.shade300,
@@ -90,7 +93,7 @@ class LostDatePickerField extends StatelessWidget {
               children: [
                 Icon(
                   Icons.calendar_month_rounded,
-                  color: primaryColor.withValues(alpha: 0.8),
+                  color: AppColors.primary,
                   size: 22,
                 ),
                 const SizedBox(width: 12),
@@ -98,11 +101,11 @@ class LostDatePickerField extends StatelessWidget {
                   child: Text(
                     selectedDate != null
                         ? _formatDisplayDate(selectedDate!)
-                        : 'Selecciona la fecha en que se perdió',
+                        : hint,
                     style: TextStyle(
                       fontSize: 14,
                       color: selectedDate != null
-                          ? const Color(0xFF1E293B)
+                          ? AppColors.textPrimary
                           : Colors.grey.shade400,
                       fontWeight: selectedDate != null
                           ? FontWeight.w500

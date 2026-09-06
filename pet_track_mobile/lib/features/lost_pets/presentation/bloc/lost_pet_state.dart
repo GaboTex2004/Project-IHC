@@ -25,6 +25,15 @@ class LostPetLoaded extends LostPetState {
   List<Object> get props => [reports];
 }
 
+class LostPetCreated extends LostPetState {
+  final LostPetReport report;
+
+  const LostPetCreated({required this.report});
+
+  @override
+  List<Object> get props => [report];
+}
+
 class LostPetError extends LostPetState {
   final String message;
 

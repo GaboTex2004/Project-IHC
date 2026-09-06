@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PetRecover - Reporte de Animal Encontrado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+        }
+
+        .view-label {
+            background: #000;
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+            letter-spacing: 0.5px;
+        }
+
+        .phone-container {
+            max-width: 400px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+            padding: 20px 16px 80px 16px;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 4px 15px 4px;
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .header .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #000;
+            letter-spacing: -0.5px;
+        }
+
+        .header-actions .icon-btn {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #333;
+            padding: 4px;
+        }
+
+        .btn-primary {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-primary:active {
+            opacity: 0.7;
+        }
+
+        .btn-secondary {
+            background: #e8e8e8;
+            color: #000;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-secondary:active {
+            background: #d0d0d0;
+        }
+
+        .btn-success {
+            background: #00aa00;
+            color: #fff;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #000;
+            border: 2px solid #000;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-outline:active {
+            background: #000;
+            color: #fff;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
+            border-radius: 8px;
+            width: auto;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid #e8e8e8;
+        }
+
+        .card-gray {
+            background: #f7f7f7;
+            border: 1px solid #e8e8e8;
+        }
+
+        .card-warning {
+            background: #fff8e8;
+            border: 2px solid #ff8800;
+        }
+
+        .card-success {
+            background: #e8f5e8;
+            border: 2px solid #00aa00;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .form-group label .optional {
+            font-weight: 400;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            background: #fafafa;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #000;
+            background: #fff;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23333' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 40px;
+        }
+
+        .photo-upload {
+            border: 2px dashed #d0d0d0;
+            border-radius: 12px;
+            padding: 32px 16px;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            cursor: pointer;
+            transition: border 0.2s;
+        }
+
+        .photo-upload:active {
+            border-color: #000;
+        }
+
+        .photo-upload .icon {
+            font-size: 36px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .toggle-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .toggle-option:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-option .toggle-info {
+            flex: 1;
+        }
+
+        .toggle-option .toggle-info .toggle-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .toggle-option .toggle-info .toggle-desc {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .toggle-switch {
+            width: 44px;
+            height: 24px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch.active {
+            background: #000;
+        }
+
+        .toggle-switch .toggle-circle {
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .toggle-switch.active .toggle-circle {
+            transform: translateX(20px);
+        }
+
+        .mt-8 { margin-top: 8px; }
+        .mt-16 { margin-top: 16px; }
+        .mt-24 { margin-top: 24px; }
+        .mb-8 { margin-bottom: 8px; }
+        .mb-16 { margin-bottom: 16px; }
+        .gap-8 { gap: 8px; }
+        .gap-12 { gap: 12px; }
+        .flex { display: flex; }
+        .flex-1 { flex: 1; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .text-center { text-align: center; }
+        .text-gray { color: #888; }
+        .text-sm { font-size: 13px; }
+        .text-xs { font-size: 11px; }
+        .text-success { color: #00aa00; }
+        .text-danger { color: #cc0000; }
+        .text-warning { color: #ff8800; }
+        .hidden { display: none !important; }
+        .w-full { width: 100%; }
+
+        .badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+
+        .badge.unknown {
+            background: #ff8800;
+            color: #fff;
+        }
+
+        .badge.found {
+            background: #00aa00;
+            color: #fff;
+        }
+
+        .badge.lost {
+            background: #cc0000;
+            color: #fff;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            border-radius: 30px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 24px;
+            padding: 24px;
+            width: 100%;
+            max-width: 340px;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-box .modal-icon {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
+        .modal-box .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #000;
+            text-align: center;
+        }
+
+        .modal-box .modal-subtitle {
+            font-size: 13px;
+            color: #666;
+            text-align: center;
+            margin-top: 4px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .modal-actions .btn-secondary {
+            flex: 1;
+            padding: 12px;
+        }
+
+        .modal-actions .btn-success {
+            flex: 1;
+            padding: 12px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin: 12px 0;
+            background: #f5f5f5;
+            padding: 4px;
+            border-radius: 12px;
+        }
+
+        .tabs .tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tabs .tab.active {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 4px;
+            bottom: 4px;
+            width: 2px;
+            background: #e0e0e0;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 8px 0 8px 16px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 14px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            border: 2px solid #fff;
+        }
+
+        .timeline-item.completed::before {
+            background: #00aa00;
+        }
+
+        .timeline-item .tl-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .timeline-item .tl-desc {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .timeline-item .tl-time {
+            font-size: 11px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================
+    VISTA 1: REPORTE DE ANIMAL ENCONTRADO (SIN NOMBRE)
+    ============================================ -->
+    <div class="view-label">🐾 Reportar Animal Encontrado (Sin Nombre)</div>
+    <div class="phone-container">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 📶 🔋</span>
+        </div>
+
+        <div class="header">
+            <div class="logo">🐾 Pet<span>Recover</span></div>
+            <div class="header-actions">
+                <button class="icon-btn">🔔</button>
+                <button class="icon-btn">👤</button>
+            </div>
+        </div>
+
+        <div style="margin:8px 0 16px 0;">
+            <h2 style="font-size:20px; font-weight:700; color:#000;">📢 Reportar animal encontrado</h2>
+            <p style="font-size:14px; color:#666; margin-top:4px;">Ayuda a reunir a una mascota con su familia</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('withName')">🐕 Con nombre</button>
+            <button class="tab" onclick="switchTab('withoutName')">🏠 Sin hogar</button>
+        </div>
+
+        <!-- ============================================
+        TAB 1: CON NOMBRE (Mascota con dueño conocido)
+        ============================================ -->
+        <div id="tabWithName">
+            <div class="form-group">
+                <label>Nombre de la mascota</label>
+                <input type="text" placeholder="Ej: Max" value="Max">
+            </div>
+
+            <div class="form-group">
+                <label>Especie</label>
+                <select>
+                    <option selected>Perro</option>
+                    <option>Gato</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Raza <span class="optional">(opcional)</span></label>
+                <input type="text" placeholder="Ej: Labrador">
+            </div>
+
+            <div class="form-group">
+                <label>Color</label>
+                <input type="text" placeholder="Ej: Dorado">
+            </div>
+
+            <div class="form-group">
+                <label>Descripción</label>
+                <textarea placeholder="Describe a la mascota que encontraste...">Perro labrador color dorado, collar rojo, muy amigable</textarea>
+            </div>
+        </div>
+
+        <!-- ============================================
+        TAB 2: SIN HOGAR (Animal callejero sin nombre)
+        ============================================ -->
+        <div id="tabWithoutName" style="display:none;">
+            <div class="card-warning" style="margin-bottom:16px;">
+                <div style="display:flex; gap:12px; align-items:flex-start;">
+                    <span style="font-size:24px;">🏠</span>
+                    <div>
+                        <div style="font-weight:600; color:#000;">Reporte sin nombre</div>
+                        <div style="font-size:13px; color:#666; margin-top:4px;">
+                            Este animal no tiene dueño conocido o fue encontrado en situación de calle.
+                            El sistema lo identificará como <strong>"Animal sin hogar"</strong>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Especie</label>
+                <select>
+                    <option selected>Perro</option>
+                    <option>Gato</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Raza <span class="optional">(opcional)</span></label>
+                <select>
+                    <option value="">No identificada</option>
+                    <option>Labrador</option>
+                    <option>Pastor Alemán</option>
+                    <option>Golden Retriever</option>
+                    <option>Bulldog</option>
+                    <option>Siamés</option>
+                    <option>Persa</option>
+                    <option>Mestizo</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Color</label>
+                <input type="text" placeholder="Ej: Café con blanco">
+            </div>
+
+            <div class="form-group">
+                <label>Tamaño estimado</label>
+                <select>
+                    <option>Pequeño</option>
+                    <option selected>Mediano</option>
+                    <option>Grande</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Edad aproximada <span class="optional">(opcional)</span></label>
+                <select>
+                    <option value="">No identificada</option>
+                    <option>Cachorro (0-6 meses)</option>
+                    <option>Joven (6 meses - 2 años)</option>
+                    <option>Adulto (2-7 años)</option>
+                    <option>Adulto mayor (7+ años)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Género</label>
+                <select>
+                    <option>Macho</option>
+                    <option>Hembra</option>
+                    <option selected>No identificado</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Señas particulares</label>
+                <textarea placeholder="Describe características distintivas del animal...">Tiene una mancha blanca en el pecho, una oreja caída</textarea>
+            </div>
+
+            <div class="toggle-option">
+                <div class="toggle-info">
+                    <div class="toggle-title">¿Tiene collar o identificación?</div>
+                    <div class="toggle-desc">Indica si el animal tiene algún tipo de identificación</div>
+                </div>
+                <div class="toggle-switch">
+                    <div class="toggle-circle"></div>
+                </div>
+            </div>
+
+            <div style="display:none;" id="idFields">
+                <div class="form-group">
+                    <label>Tipo de identificación</label>
+                    <select>
+                        <option>Collar con placa</option>
+                        <option>Microchip</option>
+                        <option>Bandana</option>
+                        <option>Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Número de identificación <span class="optional">(opcional)</span></label>
+                    <input type="text" placeholder="Ej: 982-000-123-456">
+                </div>
+            </div>
+        </div>
+
+        <!-- Campos comunes -->
+        <div class="form-group">
+            <label>📍 Ubicación donde fue encontrado</label>
+            <input type="text" placeholder="Ej: Parque Central, Zona 1" value="Parque Central, Zona 1">
+        </div>
+
+        <div class="form-group">
+            <label>📸 Fotos</label>
+            <div class="photo-upload">
+                <span class="icon">📸</span>
+                Toca para agregar fotos
+                <span style="display:block; font-size:12px; color:#aaa; margin-top:4px;">Máximo 5 fotos</span>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+            <button class="btn-secondary" style="flex:1;">Cancelar</button>
+            <button class="btn-primary" style="flex:1;" onclick="document.getElementById('modalSuccess').classList.add('active')">
+                📢 Reportar
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================
+    VISTA 2: ANIMAL REPORTADO CON ÉXITO
+    ============================================ -->
+    <div class="view-label">✅ Animal Reportado con Éxito</div>
+    <div class="phone-container">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 📶 🔋</span>
+        </div>
+
+        <div class="header">
+            <div class="logo">🐾 Pet<span>Recover</span></div>
+            <div class="header-actions">
+                <button class="icon-btn">✕</button>
+            </div>
+        </div>
+
+        <div class="card-success" style="text-align:center; padding:24px;">
+            <span style="font-size:56px; display:block; margin-bottom:8px;">🎉</span>
+            <div style="font-size:22px; font-weight:700; color:#00aa00;">¡Reporte publicado!</div>
+            <div style="font-size:14px; color:#666; margin-top:4px;">El animal ha sido registrado en el sistema</div>
+        </div>
+
+        <div style="display:flex; gap:14px; padding:16px; background:#f7f7f7; border-radius:16px; margin:12px 0;">
+            <div style="width:70px; height:70px; border-radius:12px; background:#e0e0e0; display:flex; align-items:center; justify-content:center; font-size:32px; flex-shrink:0;">🐕</div>
+            <div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="font-size:18px; font-weight:700; color:#000;">Sin nombre</div>
+                    <span class="badge unknown">SIN HOGAR</span>
+                </div>
+                <div style="font-size:13px; color:#666;">Perro · Mestizo · Mediano</div>
+                <div style="font-size:12px; color:#888; margin-top:2px;">📍 Parque Central, Zona 1</div>
+            </div>
+        </div>
+
+        <div class="card-gray">
+            <div style="font-weight:600; color:#000; margin-bottom:8px;">📋 Acciones disponibles</div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+                <div style="display:flex; gap:12px; align-items:center; padding:8px; background:#fff; border-radius:8px;">
+                    <span style="font-size:20px;">🔔</span>
+                    <div>
+                        <div style="font-size:14px; font-weight:500; color:#000;">Recibir notificaciones</div>
+                        <div style="font-size:12px; color:#666;">Te avisaremos si alguien busca a este animal</div>
+                    </div>
+                    <div class="toggle-switch active" style="margin-left:auto;">
+                        <div class="toggle-circle"></div>
+                    </div>
+                </div>
+                <div style="display:flex; gap:12px; align-items:center; padding:8px; background:#fff; border-radius:8px;">
+                    <span style="font-size:20px;">🤖</span>
+                    <div>
+                        <div style="font-size:14px; font-weight:500; color:#000;">Reconocimiento IA</div>
+                        <div style="font-size:12px; color:#666;">La IA buscará coincidencias automáticamente</div>
+                    </div>
+                    <div class="toggle-switch active" style="margin-left:auto;">
+                        <div class="toggle-circle"></div>
+                    </div>
+                </div>
+                <div style="display:flex; gap:12px; align-items:center; padding:8px; background:#fff; border-radius:8px;">
+                    <span style="font-size:20px;">📤</span>
+                    <div>
+                        <div style="font-size:14px; font-weight:500; color:#000;">Compartir reporte</div>
+                        <div style="font-size:12px; color:#666;">Difunde en redes sociales y grupos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin:12px 0;">
+            <div style="font-weight:600; color:#000; margin-bottom:8px;">📊 Estadísticas del reporte</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
+                <div style="background:#f7f7f7; padding:12px; border-radius:12px; text-align:center;">
+                    <div style="font-size:20px; font-weight:700; color:#000;">0</div>
+                    <div style="font-size:11px; color:#888;">Coincidencias</div>
+                </div>
+                <div style="background:#f7f7f7; padding:12px; border-radius:12px; text-align:center;">
+                    <div style="font-size:20px; font-weight:700; color:#000;">5</div>
+                    <div style="font-size:11px; color:#888;">Personas alcanzadas</div>
+                </div>
+                <div style="background:#f7f7f7; padding:12px; border-radius:12px; text-align:center;">
+                    <div style="font-size:20px; font-weight:700; color:#000;">0</div>
+                    <div style="font-size:11px; color:#888;">Mensajes</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+            <button class="btn-secondary" style="flex:1;">📊 Ver estadísticas</button>
+            <button class="btn-primary" style="flex:1;">🏠 Ir al inicio</button>
+        </div>
+    </div>
+
+    <!-- ============================================
+    VISTA 3: LISTA DE ANIMALES SIN HOGAR
+    ============================================ -->
+    <div class="view-label">🏠 Animales Sin Hogar Reportados</div>
+    <div class="phone-container">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 📶 🔋</span>
+        </div>
+
+        <div class="header">
+            <div class="logo">🏠 Sin <span>Hogar</span></div>
+            <div class="header-actions">
+                <button class="icon-btn">🔍</button>
+                <button class="icon-btn">➕</button>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:8px; margin:12px 0; overflow-x:auto; padding-bottom:4px;">
+            <button class="btn-secondary btn-sm" style="background:#000; color:#fff;">Todos</button>
+            <button class="btn-secondary btn-sm">Perros</button>
+            <button class="btn-secondary btn-sm">Gatos</button>
+            <button class="btn-secondary btn-sm">Recientes</button>
+        </div>
+
+        <div class="card" style="border-left: 4px solid #ff8800;">
+            <div style="display:flex; gap:14px;">
+                <div style="width:70px; height:70px; border-radius:12px; background:#e8e8e8; display:flex; align-items:center; justify-content:center; font-size:32px; flex-shrink:0;">🐕</div>
+                <div style="flex:1;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <div style="font-size:16px; font-weight:600; color:#000;">Sin nombre</div>
+                        <span class="badge unknown">SIN HOGAR</span>
+                    </div>
+                    <div style="font-size:13px; color:#666;">Perro · Mestizo · Mediano</div>
+                    <div style="font-size:12px; color:#888;">📍 Parque Central · Hace 2h</div>
+                    <div style="font-size:12px; color:#999;">Reportado por: María González</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="border-left: 4px solid #ff8800;">
+            <div style="display:flex; gap:14px;">
+                <div style="width:70px; height:70px; border-radius:12px; background:#e8e8e8; display:flex; align-items:center; justify-content:center; font-size:32px; flex-shrink:0;">🐈</div>
+                <div style="flex:1;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <div style="font-size:16px; font-weight:600; color:#000;">Sin nombre</div>
+                        <span class="badge unknown">SIN HOGAR</span>
+                    </div>
+                    <div style="font-size:13px; color:#666;">Gato · Naranja · Pequeño</div>
+                    <div style="font-size:12px; color:#888;">📍 Barrio Norte · Hace 5h</div>
+                    <div style="font-size:12px; color:#999;">Reportado por: Carlos Pérez</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="border-left: 4px solid #00aa00;">
+            <div style="display:flex; gap:14px;">
+                <div style="width:70px; height:70px; border-radius:12px; background:#e8e8e8; display:flex; align-items:center; justify-content:center; font-size:32px; flex-shrink:0;">🐕</div>
+                <div style="flex:1;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <div style="font-size:16px; font-weight:600; color:#000;">Sin nombre</div>
+                        <span class="badge found">✅ ADOPTADO</span>
+                    </div>
+                    <div style="font-size:13px; color:#666;">Perro · Pastor Alemán · Grande</div>
+                    <div style="font-size:12px; color:#888;">📍 Zona Sur · Hace 2 días</div>
+                    <div style="font-size:12px; color:#999;">Reportado por: Ana Martínez</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-gray" style="text-align:center; padding:20px; margin-top:8px;">
+            <div style="font-weight:600; color:#000;">📊 Resumen de animales sin hogar</div>
+            <div style="display:flex; justify-content:center; gap:24px; margin-top:8px;">
+                <div><span style="font-weight:700; color:#000;">12</span> <span style="color:#888;">Reportados</span></div>
+                <div><span style="font-weight:700; color:#ff8800;">8</span> <span style="color:#888;">Sin hogar</span></div>
+                <div><span style="font-weight:700; color:#00aa00;">4</span> <span style="color:#888;">Adoptados</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    VISTA 4: MODAL DE CONFIRMACIÓN
+    ============================================ -->
+    <div class="view-label">📢 Confirmar Reporte Sin Hogar</div>
+    <div class="phone-container" style="position:relative; min-height:500px;">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 📶 🔋</span>
+        </div>
+
+        <div class="header">
+            <div class="logo">🐾 Pet<span>Recover</span></div>
+            <div class="header-actions">
+                <button class="icon-btn">✕</button>
+            </div>
+        </div>
+
+        <div style="padding:16px; background:#fff8e8; border-radius:12px; border:2px solid #ff8800; margin:12px 0;">
+            <div style="display:flex; gap:12px; align-items:flex-start;">
+                <span style="font-size:28px;">⚠️</span>
+                <div>
+                    <div style="font-weight:600; color:#000;">Estás reportando un animal sin hogar</div>
+                    <div style="font-size:13px; color:#666; margin-top:4px;">
+                        Este animal <strong>no tiene dueño conocido</strong>. Se registrará como "Sin hogar" 
+                        y estará disponible para que su dueño lo reclame o para adopción.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:14px; padding:12px; background:#f7f7f7; border-radius:12px; margin:12px 0;">
+            <div style="width:60px; height:60px; border-radius:12px; background:#e0e0e0; display:flex; align-items:center; justify-content:center; font-size:28px; flex-shrink:0;">🐕</div>
+            <div>
+                <div style="font-size:16px; font-weight:700; color:#000;">Sin nombre</div>
+                <div style="font-size:13px; color:#666;">Perro · Mestizo · Mediano</div>
+                <div style="font-size:12px; color:#888;">📍 Parque Central, Zona 1</div>
+                <span class="badge unknown" style="margin-top:4px;">SIN HOGAR</span>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:16px;">
+            <button class="btn-secondary" style="flex:1;">Cancelar</button>
+            <button class="btn-primary" style="flex:1;" onclick="document.getElementById('modalSuccess').classList.add('active')">
+                ✅ Confirmar reporte
+            </button>
+        </div>
+
+        <!-- Modal de éxito -->
+        <div class="modal-overlay" id="modalSuccess">
+            <div class="modal-box">
+                <div class="modal-icon">🐾</div>
+                <div class="modal-title">¡Reporte publicado!</div>
+                <div class="modal-subtitle">El animal sin hogar ha sido registrado en el sistema</div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="document.getElementById('modalSuccess').classList.remove('active')">Ver reporte</button>
+                    <button class="btn-success" onclick="document.getElementById('modalSuccess').classList.remove('active')">Ir al inicio</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle switches
+        document.querySelectorAll('.toggle-switch').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                
+                // Mostrar campos de identificación
+                if (this.closest('.toggle-option') && this.closest('.toggle-option').querySelector('.toggle-title')?.textContent.includes('collar')) {
+                    const idFields = document.getElementById('idFields');
+                    if (this.classList.contains('active')) {
+                        idFields.style.display = 'block';
+                    } else {
+                        idFields.style.display = 'none';
+                    }
+                }
+            });
+        });
+
+        // Tabs
+        function switchTab(tab) {
+            const withName = document.getElementById('tabWithName');
+            const withoutName = document.getElementById('tabWithoutName');
+            const tabs = document.querySelectorAll('.tab');
+
+            tabs.forEach(t => t.classList.remove('active'));
+
+            if (tab === 'withName') {
+                withName.style.display = 'block';
+                withoutName.style.display = 'none';
+                tabs[0].classList.add('active');
+            } else {
+                withName.style.display = 'none';
+                withoutName.style.display = 'block';
+                tabs[1].classList.add('active');
+            }
+        }
+
+        // Modal
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
