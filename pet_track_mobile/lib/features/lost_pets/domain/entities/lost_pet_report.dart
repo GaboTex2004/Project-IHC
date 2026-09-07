@@ -9,6 +9,8 @@ class LostPetReport extends Equatable {
   final String lastLocation;
   final String dateLost;
   final String contactInfo;
+  final String reportType;
+  final String status;
   final String createdAt;
 
   const LostPetReport({
@@ -20,9 +22,27 @@ class LostPetReport extends Equatable {
     required this.lastLocation,
     required this.dateLost,
     required this.contactInfo,
+    this.reportType = 'LOST',
+    this.status = 'ACTIVE',
     this.createdAt = '',
   });
 
+  String get displayName => name.trim().isEmpty ? 'Sin nombre' : name;
+  bool get isActive => status == 'ACTIVE';
+  bool get isResolved => status == 'RESOLVED';
+
   @override
-  List<Object> get props => [id, userId, name, photo, characteristics, lastLocation, dateLost, contactInfo, createdAt];
+  List<Object> get props => [
+    id,
+    userId,
+    name,
+    photo,
+    characteristics,
+    lastLocation,
+    dateLost,
+    contactInfo,
+    reportType,
+    status,
+    createdAt,
+  ];
 }

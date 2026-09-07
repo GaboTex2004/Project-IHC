@@ -8,7 +8,10 @@ extension ReportTypeLabel on ReportType {
         ReportType.homeless => 'Sin hogar',
       };
 
-  bool get isBackendSupported => this == ReportType.namedPet;
+  String get apiValue => switch (this) {
+        ReportType.namedPet => 'FOUND',
+        ReportType.homeless => 'HOMELESS',
+      };
 }
 
 enum PetSpecies { dog, cat, other }

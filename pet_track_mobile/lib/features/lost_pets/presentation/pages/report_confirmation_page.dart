@@ -20,19 +20,6 @@ class ReportConfirmationPage extends StatelessWidget {
   }
 
   void _publish(BuildContext context) {
-    if (!formData.reportType.isBackendSupported) {
-      showDialog<void>(
-        context: context,
-        builder: (dialogContext) => AlertDialog(
-          icon: const Icon(Icons.construction_rounded, color: AppColors.secondary, size: 38),
-          title: const Text('Reporte listo para integrarse'),
-          content: const Text('La modalidad Sin hogar ya está preparada en la aplicación. Su publicación estará disponible cuando conectemos el nuevo servicio.'),
-          actions: [TextButton(onPressed: () => Navigator.of(dialogContext).pop(), child: const Text('Entendido'))],
-        ),
-      );
-      return;
-    }
-
     final mainPhoto = formData.photos.first;
     context.read<LostPetBloc>().add(CreateReport(
       name: formData.name,
@@ -42,6 +29,7 @@ class ReportConfirmationPage extends StatelessWidget {
       lastLocation: formData.lastLocation,
       dateLost: _apiDate,
       contactInfo: formData.contactInfo,
+      reportType: formData.reportType.apiValue,
     ));
   }
 
@@ -91,10 +79,6 @@ class ReportConfirmationPage extends StatelessWidget {
               _DetailRow(icon: Icons.phone_outlined, label: 'Contacto', value: formData.contactInfo),
               if (formData.photos.length > 1)
                 _DetailRow(icon: Icons.photo_library_outlined, label: 'Fotografías', value: '${formData.photos.length} seleccionadas'),
-              if (!formData.reportType.isBackendSupported) ...[
-                const SizedBox(height: 8),
-                const Text('La publicación de esta modalidad requiere la próxima integración con el servidor.', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
-              ],
               const SizedBox(height: 28),
               Row(children: [
                 Expanded(child: OutlinedButton(onPressed: () => Navigator.of(context).pop(), style: OutlinedButton.styleFrom(minimumSize: const Size(0, 52)), child: const Text('Editar'))),

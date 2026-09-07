@@ -21,11 +21,21 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, User>> register(String username, String email, String password,
-      {String firstName = '', String lastName = ''}) async {
+  Future<Either<Failure, User>> register(
+    String username,
+    String email,
+    String password, {
+    String firstName = '',
+    String lastName = '',
+  }) async {
     try {
-      final model = await remoteDataSource.register(username, email, password,
-          firstName: firstName, lastName: lastName);
+      final model = await remoteDataSource.register(
+        username,
+        email,
+        password,
+        firstName: firstName,
+        lastName: lastName,
+      );
       return Right(model.toEntity());
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
@@ -34,7 +44,12 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, void>> logout() async {
-    return const Right(null);
+    try {
+      await remoteDataSource.logout();
+      return const Right(null);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
   }
 
   @override

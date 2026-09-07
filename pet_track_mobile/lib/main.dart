@@ -7,10 +7,9 @@ import 'theme/app_theme.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/auth/domain/usecases/login_usecase.dart';
 import 'features/auth/domain/usecases/register_usecase.dart';
+import 'features/auth/domain/usecases/logout_usecase.dart';
 import 'features/auth/presentation/pages/login_page.dart';
 import 'features/lost_pets/presentation/bloc/lost_pet_bloc.dart';
-import 'features/lost_pets/domain/usecases/list_reports_usecase.dart';
-import 'features/lost_pets/domain/usecases/create_report_usecase.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,14 +37,10 @@ class PetTrackApp extends StatelessWidget {
           create: (_) => AuthBloc(
             loginUseCase: di.sl<LoginUseCase>(),
             registerUseCase: di.sl<RegisterUseCase>(),
+            logoutUseCase: di.sl<LogoutUseCase>(),
           ),
         ),
-        BlocProvider(
-          create: (_) => LostPetBloc(
-            listReportsUseCase: di.sl<ListReportsUseCase>(),
-            createReportUseCase: di.sl<CreateReportUseCase>(),
-          ),
-        ),
+        BlocProvider(create: (_) => di.sl<LostPetBloc>()),
       ],
       child: MaterialApp(
         title: dotenv.env['SYSTEM_NAME'] ?? 'Pet Track',

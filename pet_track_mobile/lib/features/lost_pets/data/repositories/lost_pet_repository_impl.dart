@@ -21,6 +21,29 @@ class LostPetRepositoryImpl implements LostPetRepository {
   }
 
   @override
+  Future<Either<Failure, List<LostPetReport>>> getMyReports() async {
+    try {
+      final models = await remoteDataSource.getMyReports();
+      return Right(models.map((model) => model.toEntity()).toList());
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, LostPetReport>> getReportDetail(int reportId) async {
+    try {
+      final model = await remoteDataSource.getReportDetail(reportId);
+      return Right(model.toEntity());
+    } on ServerException catch (e) {
+      if (e.statusCode == 404) {
+        return Left(NotFoundFailure(message: e.message));
+      }
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
   Future<Either<Failure, LostPetReport>> createReport({
     required String name,
     required List<int> photoBytes,
@@ -29,6 +52,7 @@ class LostPetRepositoryImpl implements LostPetRepository {
     required String lastLocation,
     required String dateLost,
     required String contactInfo,
+    required String reportType,
   }) async {
     try {
       final model = await remoteDataSource.createReport(
@@ -39,9 +63,26 @@ class LostPetRepositoryImpl implements LostPetRepository {
         lastLocation: lastLocation,
         dateLost: dateLost,
         contactInfo: contactInfo,
+        reportType: reportType,
       );
       return Right(model.toEntity());
     } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, LostPetReport>> resolveReport(int reportId) async {
+    try {
+      final model = await remoteDataSource.updateReportStatus(
+        reportId: reportId,
+        status: 'RESOLVED',
+      );
+      return Right(model.toEntity());
+    } on ServerException catch (e) {
+      if (e.statusCode == 404) {
+        return Left(NotFoundFailure(message: e.message));
+      }
       return Left(ServerFailure(message: e.message));
     }
   }
