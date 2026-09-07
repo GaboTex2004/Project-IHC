@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PetRecover - Todas las Vistas</title>
+    <style>
+        /* ============================================
+           RESET Y ESTILOS BASE
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+        }
+
+        .view-label {
+            background: #000;
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+            letter-spacing: 0.5px;
+        }
+
+        .phone-container {
+            max-width: 400px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+            padding: 20px 16px 80px 16px;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        /* ============================================
+           BARRA DE ESTADO
+           ============================================ */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 4px 15px 4px;
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .header .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #000;
+            letter-spacing: -0.5px;
+        }
+
+        .header .logo span {
+            color: #666;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 16px;
+        }
+
+        .header-actions .icon-btn {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #333;
+            padding: 4px;
+        }
+
+        /* ============================================
+           BOTONES
+           ============================================ */
+        .btn-primary {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-primary:active {
+            opacity: 0.7;
+        }
+
+        .btn-secondary {
+            background: #e8e8e8;
+            color: #000;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-secondary:active {
+            background: #d0d0d0;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #000;
+            border: 2px solid #000;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-outline:active {
+            background: #000;
+            color: #fff;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
+            border-radius: 8px;
+            width: auto;
+        }
+
+        .btn-danger {
+            background: #cc0000;
+            color: #fff;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        /* ============================================
+           TARJETAS
+           ============================================ */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid #e8e8e8;
+        }
+
+        .card-gray {
+            background: #f7f7f7;
+            border: 1px solid #e8e8e8;
+        }
+
+        .card-dark {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+        }
+
+        .card-dark .text-gray {
+            color: #aaa;
+        }
+
+        /* ============================================
+           VISTA 1: DETALLE DE MASCOTA PERDIDA (COMPLETO)
+           ============================================ */
+        .view-detail .detail-header {
+            position: relative;
+            margin: -20px -16px 0 -16px;
+        }
+
+        .view-detail .detail-header .hero-image {
+            width: 100%;
+            height: 240px;
+            background: #d0d0d0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            color: #999;
+            position: relative;
+        }
+
+        .view-detail .detail-header .hero-image .image-counter {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .view-detail .detail-header .back-btn {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+        }
+
+        .view-detail .detail-header .share-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+        }
+
+        .view-detail .detail-content {
+            padding: 16px 0 0 0;
+        }
+
+        .view-detail .detail-content .pet-name-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .view-detail .detail-content .pet-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .view-detail .detail-content .pet-badge {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 20px;
+            background: #000;
+            color: #fff;
+        }
+
+        .view-detail .detail-content .pet-badge.found {
+            background: #d0d0d0;
+            color: #000;
+        }
+
+        .view-detail .detail-content .pet-badge.resolved {
+            background: #e8e8e8;
+            color: #666;
+        }
+
+        .view-detail .detail-content .pet-owner {
+            font-size: 14px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .view-detail .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .view-detail .info-grid .info-item {
+            background: #f7f7f7;
+            padding: 12px;
+            border-radius: 12px;
+        }
+
+        .view-detail .info-grid .info-item .label {
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .view-detail .info-grid .info-item .value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #000;
+            margin-top: 2px;
+        }
+
+        .view-detail .info-grid .info-item.full {
+            grid-column: span 2;
+        }
+
+        .view-detail .detail-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .view-detail .detail-actions .btn-primary,
+        .view-detail .detail-actions .btn-secondary {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+        }
+
+        .view-detail .report-timeline {
+            margin-top: 16px;
+        }
+
+        .view-detail .report-timeline .timeline-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .view-detail .report-timeline .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .view-detail .report-timeline .timeline-icon {
+            font-size: 20px;
+            width: 32px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .view-detail .report-timeline .timeline-content {
+            flex: 1;
+        }
+
+        .view-detail .report-timeline .timeline-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .view-detail .report-timeline .timeline-desc {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .view-detail .report-timeline .timeline-time {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* ============================================
+           VISTA 2: RECONOCIMIENTO CON IA
+           ============================================ */
+        .view-ia .ia-header {
+            text-align: center;
+            padding: 10px 0 16px 0;
+        }
+
+        .view-ia .ia-header .ia-icon {
+            font-size: 48px;
+            display: block;
+        }
+
+        .view-ia .ia-header .ia-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #000;
+            margin-top: 8px;
+        }
+
+        .view-ia .ia-header .ia-subtitle {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .view-ia .scan-area {
+            border: 3px dashed #d0d0d0;
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 16px 0;
+            background: #fafafa;
+            position: relative;
+        }
+
+        .view-ia .scan-area .scan-icon {
+            font-size: 56px;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .view-ia .scan-area .scan-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .view-ia .scan-area .scan-hint {
+            font-size: 13px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .view-ia .scan-area .scan-btn {
+            margin-top: 16px;
+            display: inline-block;
+            padding: 12px 32px;
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .view-ia .scan-area .scanning-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            border-radius: 17px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+        .view-ia .scan-area .scanning-overlay.active {
+            display: flex;
+        }
+
+        .view-ia .scan-area .scanning-overlay .spinner {
+            font-size: 48px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .view-ia .scan-area .scanning-overlay .progress-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        .view-ia .scan-area .scanning-overlay .progress-bar {
+            width: 200px;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .view-ia .scan-area .scanning-overlay .progress-bar .fill {
+            height: 100%;
+            background: #fff;
+            border-radius: 3px;
+            animation: progress 3s ease-in-out forwards;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .view-ia .ia-results .result-card {
+            display: flex;
+            gap: 14px;
+            padding: 14px;
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .view-ia .ia-results .result-card .result-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+
+        .view-ia .ia-results .result-card .result-info {
+            flex: 1;
+        }
+
+        .view-ia .ia-results .result-card .result-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .view-ia .ia-results .result-card .result-detail {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .view-ia .ia-results .result-card .result-confidence {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .view-ia .ia-results .result-card .confidence-bar {
+            width: 80px;
+            height: 6px;
+            background: #e8e8e8;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .view-ia .ia-results .result-card .confidence-bar .fill {
+            height: 100%;
+            background: #000;
+            border-radius: 3px;
+        }
+
+        .view-ia .ia-results .result-card .confidence-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .view-ia .ia-results .result-card .match-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 20px;
+            background: #000;
+            color: #fff;
+        }
+
+        .view-ia .ia-results .result-card .match-badge.high {
+            background: #000;
+        }
+
+        .view-ia .ia-results .result-card .match-badge.medium {
+            background: #888;
+        }
+
+        .view-ia .ia-results .result-card .match-badge.low {
+            background: #ccc;
+            color: #000;
+        }
+
+        /* ============================================
+           VISTA 3: NOTIFICACIONES
+           ============================================ */
+        .view-notifications .notif-item {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid #f0f0f0;
+            align-items: flex-start;
+        }
+
+        .view-notifications .notif-item:last-child {
+            border-bottom: none;
+        }
+
+        .view-notifications .notif-item .notif-icon {
+            font-size: 22px;
+            width: 40px;
+            height: 40px;
+            background: #f5f5f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .view-notifications .notif-item .notif-content {
+            flex: 1;
+        }
+
+        .view-notifications .notif-item .notif-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .view-notifications .notif-item .notif-text {
+            font-size: 13px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .view-notifications .notif-item .notif-time {
+            font-size: 11px;
+            color: #bbb;
+            margin-top: 4px;
+        }
+
+        .view-notifications .notif-item .notif-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #000;
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+
+        .view-notifications .notif-item.read .notif-dot {
+            background: #ddd;
+        }
+
+        .view-notifications .notif-filter {
+            display: flex;
+            gap: 8px;
+            margin: 12px 0 16px 0;
+        }
+
+        .view-notifications .notif-filter button {
+            padding: 6px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            background: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-notifications .notif-filter button.active {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+
+        /* ============================================
+           VISTA 4: REGISTRO DE USUARIO
+           ============================================ */
+        .view-register .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        .view-register .step-indicator .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #e0e0e0;
+        }
+
+        .view-register .step-indicator .step-dot.active {
+            background: #000;
+        }
+
+        .view-register .step-indicator .step-dot.done {
+            background: #666;
+        }
+
+        .view-register .form-group {
+            margin-bottom: 16px;
+        }
+
+        .view-register .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .view-register .form-group input,
+        .view-register .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            background: #fafafa;
+            outline: none;
+        }
+
+        .view-register .form-group input:focus,
+        .view-register .form-group select:focus {
+            border-color: #000;
+            background: #fff;
+        }
+
+        /* ============================================
+           VISTA 5: MIS MASCOTAS
+           ============================================ */
+        .view-my-pets .pet-list .pet-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .view-my-pets .pet-list .pet-item:last-child {
+            border-bottom: none;
+        }
+
+        .view-my-pets .pet-list .pet-item .pet-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #e8e8e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .view-my-pets .pet-list .pet-item .pet-info {
+            flex: 1;
+        }
+
+        .view-my-pets .pet-list .pet-item .pet-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .view-my-pets .pet-list .pet-item .pet-detail {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .view-my-pets .pet-list .pet-item .pet-status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .view-my-pets .pet-list .pet-item .pet-status-dot.safe {
+            background: #00aa00;
+        }
+
+        .view-my-pets .pet-list .pet-item .pet-status-dot.lost {
+            background: #cc0000;
+        }
+
+        .view-my-pets .pet-list .pet-item .pet-status-dot.pending {
+            background: #ff8800;
+        }
+
+        /* ============================================
+           VISTA 6: MAPA DE AVISTAMIENTOS
+           ============================================ */
+        .view-map .map-container {
+            height: 300px;
+            background: #e8e8e8;
+            border-radius: 16px;
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .view-map .map-container .map-placeholder {
+            text-align: center;
+            color: #888;
+        }
+
+        .view-map .map-container .map-placeholder .map-icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .view-map .map-container .map-marker {
+            position: absolute;
+            font-size: 28px;
+        }
+
+        .view-map .map-container .map-marker.m1 { top: 25%; left: 20%; }
+        .view-map .map-container .map-marker.m2 { top: 45%; right: 25%; }
+        .view-map .map-container .map-marker.m3 { bottom: 30%; left: 35%; }
+        .view-map .map-container .map-marker.m4 { top: 15%; right: 15%; }
+
+        .view-map .map-legend {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 12px 0;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .view-map .map-legend .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .view-map .map-legend .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .view-map .map-legend .legend-dot.red { background: #cc0000; }
+        .view-map .map-legend .legend-dot.green { background: #00aa00; }
+        .view-map .map-legend .legend-dot.orange { background: #ff8800; }
+
+        /* ============================================
+           VISTA 7: CHAT DETALLE
+           ============================================ */
+        .view-chat .chat-messages {
+            height: 400px;
+            overflow-y: auto;
+            padding: 12px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .view-chat .chat-messages .msg {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .view-chat .chat-messages .msg.sent {
+            background: #000;
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .view-chat .chat-messages .msg.received {
+            background: #f0f0f0;
+            color: #000;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .view-chat .chat-messages .msg .msg-time {
+            font-size: 10px;
+            color: #999;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .view-chat .chat-messages .msg.sent .msg-time {
+            color: #aaa;
+        }
+
+        .view-chat .chat-input {
+            display: flex;
+            gap: 10px;
+            padding-top: 12px;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .view-chat .chat-input input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .view-chat .chat-input input:focus {
+            border-color: #000;
+        }
+
+        .view-chat .chat-input button {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* ============================================
+           UTILITIES
+           ============================================ */
+        .mt-8 { margin-top: 8px; }
+        .mt-16 { margin-top: 16px; }
+        .mt-24 { margin-top: 24px; }
+        .mt-32 { margin-top: 32px; }
+        .mb-8 { margin-bottom: 8px; }
+        .mb-16 { margin-bottom: 16px; }
+        .gap-8 { gap: 8px; }
+        .gap-12 { gap: 12px; }
+        .flex { display: flex; }
+        .flex-1 { flex: 1; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .text-center { text-align: center; }
+        .text-gray { color: #888; }
+        .text-sm { font-size: 13px; }
+        .text-xs { font-size: 11px; }
+        .text-white { color: #fff; }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Scroll personalizado */
+        .phone-container::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================
+    VISTA 1: DETALLE COMPLETO DE MASCOTA PERDIDA
+    ============================================ -->
+    <div class="view-label">🐾 Detalle Completo de Mascota</div>
+    <div class="phone-container">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 📶 🔋</span>
+        </div>
+
+        <div class="view-detail">
+            <div class="detail-header">
+                <div class="hero-image">
+                    🐕
+                    <span class="image-counter">📸 1/4</span>
+                </div>
+                <button class="back-btn">‹</button>
+                <button class="share-btn">↗</button>
+            </div>
+
+            <div class="detail-content">
+                <div class="pet-name-row">
+                    <div>
+                        <div class="pet-name">Max</div>
+                        <div class="pet-owner">Dueño: Juan Pérez · Publicado hace 2h</div>
+                    </div>
+                    <span class="pet-badge">PERDIDO</span>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="label">Especie</div>
+                        <div class="value">Perro</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Raza</div>
+                        <div class="value">Labrador Retriever</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Edad</div>
+                        <div class="value">3 años</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Género</div>
+                        <div class="value">Macho</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Color</div>
+                        <div class="value">Dorado</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Peso</div>
+                        <div class="value">28 kg</div>
+                    </div>
+                    <div class="info-item full">
+                        <div class="label">Señas particulares</div>
+                        <div class="value">Collar rojo con placa metálica, mancha blanca en el pecho, orejas caídas</div>
+                    </div>
+                    <div class="info-item full">
+                        <div class="label">Microchip</div>
+                        <div class="value">982-000-123-456</div>
+                    </div>
+                </div>
+
+                <div class="card-gray">
+                    <div style="display:flex; gap:12px; align-items:center;">
+                        <span style="font-size:20px;">📍</span>
+                        <div style="flex:1;">
+                            <div style="font-weight:600; color:#000;">Última ubicación</div>
+                            <div style="font-size:14px; color:#666;">Parque Central, Zona 1, Ciudad</div>
+                            <div style="font-size:12px; color:#999;">Visto por última vez: 15/01/2026 18:30</div>
+                        </div>
+                        <button class="btn-secondary btn-sm" style="width:auto;">🗺️</button>
+                    </div>
+                </div>
+
+                <div class="card-gray">
+                    <div style="font-weight:600; color:#000; margin-bottom:8px;">💰 Recompensa</div>
+                    <div style="font-size:20px; font-weight:700; color:#000;">$500.00 MXN</div>
+                    <div style="font-size:13px; color:#666; margin-top:4px;">Se ofrece recompensa por información que lleve a su encuentro</div>
+                </div>
+
+                <div class="detail-actions">
+                    <button class="btn-secondary">💬 Contactar</button>
+                    <button class="btn-primary">✅ Lo encontré</button>
+                </div>
+
+                <div class="report-timeline">
+                    <div style="font-weight:600; color:#000; margin-bottom:8px;">📋 Historial del reporte</div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">📢</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Reporte publicado</div>
+                            <div class="timeline-desc">Juan Pérez reportó la pérdida de Max</div>
+                            <div class="timeline-time">15/01/2026 19:00</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">👀</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Avistamiento reportado</div>
+                            <div class="timeline-desc">Visto en Parque Central cerca de la fuente</div>
+                            <div class="timeline-time">15/01/2026 20:30</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">🤖</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Coincidencia IA encontrada</div>
+                            <div class="timeline-desc">92% de coincidencia con un perro avistado en Zona 3</div>
+                            <div class="timeline-time">15/01/2026 21:15</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    VISTA 2: RECONOCIMIENTO CON IA
+    ============================================ -->
+    <div class="view-label">🤖 Reconocimiento con IA</div>
+    <div class="phone-container">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 📶 🔋</span>
+        </div>
+
+        <div class="view-ia">
+            <div class="header" style="border-bottom: 1px solid #e8e8e8; padding-bottom:16px;">
+                <div class="logo" style="font-size:18px;">🤖 IA Reconocimiento</div>
+                <button class="icon-btn" style="font-size:20px;">✕</button>
+            </div>
+
+            <div class="ia-header">
+                <span class="ia-icon">🔍</span>
+                <div class="ia-title">Búsqueda por Imagen</div>
+                <div class="ia-subtitle">Sube una foto de la mascota que viste y la IA buscará coincidencias</div>
+            </div>
+
+            <div class="scan-area" id="scanArea">
+                <span class="scan-icon">📸</span>
+                <div class="scan-text">Toca para subir una foto</div>
+                <div class="scan-hint">La IA analizará la imagen y buscará coincidencias</div>
+                <button class="scan-btn" onclick="startScan()">Escanear ahora</button>
+
+                <div class="scanning-overlay" id="scanningOverlay">
+                    <div class="spinner">⚙️</div>
+                    <div class="progress-text">Analizando imagen...</div>
+                    <div class="progress-bar">
+                        <div class="fill"></div>
+                    </div>
+                    <div style="font-size:13px; color:#aaa; margin-top:12px;">Reconocimiento facial en progreso</div>
+                </div>
+            </div>
+
+            <div style="display:flex; gap:10px; margin:12px 0;">
+                <button class="btn-secondary" style="flex:1; padding:10px;">📷 Cámara</button>
+                <button class="btn-secondary" style="flex:1; padding:10px;">🖼️ Galería</button>
+            </div>
+
+            <div class="ia-results">
+                <div style="font-weight:600; color:#000; margin:16px 0 12px 0;">Resultados de coincidencia</div>
+
+                <div class="result-card">
+                    <div class="result-img">🐕</div>
+                    <div class="result-info">
+                        <div class="result-name">Max</div>
+                        <div class="result-detail">Labrador · 3 años · Perdido hace 2h</div>
+                        <div class="result-confidence">
+                            <span class="match-badge high">92% coincidencia</span>
+                            <div class="confidence-bar">
+                                <div class="fill" style="width:92%;"></div>
+                            </div>
+                            <span class="confidence-text">92%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-img">🐕</div>
+                    <div class="result-info">
+                        <div class="result-name">Rocky</div>
+                        <div class="result-detail">Pastor Alemán · 4 años · Perdido hace 5h</div>
+                        <div class="result-confidence">
+                            <span class="match-badge medium">74% coincidencia</span>
+                            <div class="confidence-bar">
+                                <div class="fill" style="width:74%;"></div>
+                            </div>
+                            <span class="confidence-text">74%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-img">🐕</div>
+                    <div class="result-info">
+                        <div class="result-name">Toby</div>
+                        <div class="result-detail">Golden Retriever · 2 años · Perdido hace 1d</div>
+                        <div class="result-confidence">
+                            <span class="match-badge low">53% coincidencia</span>
+                            <div class="confidence-bar">
+                                <div class="fill" style="width:53%; background:#888;"></div>
+                            </div>
+                            <span class="confidence-text">53%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-dark mt-16" style="text-align:center; padding:16px;">
+                <div style="font-size:14px; font-weight:600;">📊 Estadísticas de la IA</div>
+                <div style="font-size:12px; color:#aaa; margin-top:4px;">
+                    Modelo: v2.1 · Precisión: 94.3% · 1,284 imágenes entrenadas
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    VISTA 3: NOTIFICACIONES
+    ============================================ -->
+    <div class="view-label">🔔 Notificaciones</div>
+    <div class="phone-container">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 📶 🔋</span>
+        </div>
+
+        <div class="view-notifications">
+            <div class="header" style="border-bottom: 1px solid #e8e8e8; padding-bottom:16px;">
+                <div class="logo" style="font-size:18px;">🔔 Notificaciones</div>
+                <button class="icon-btn" style="font-size:14px; font-weight:600; color:#888;">Marcar todas</button>
+            </div>
+
+            <div class="notif-filter">
+                <button class="active">Todas</button>
+                <button>No leídas</button>
+                <button>IA</button>
+                <button>Mensajes</button>
+            </div>
+
+            <div class="notif-item">
+                <div class="notif-icon">🤖</div>
+                <div class="notif-content">
+                    <div class="notif-title">Nueva coincidencia IA encontrada</div>
+                    <div class="notif-text">92% de coincidencia entre Max y un avistamiento en Zona 3</div>
+                    <div class="notif-time">Hace 15 minutos</div>
+                </div>
+                <div class="notif-dot"></div>
+            </div>
+
+            <div class="notif-item">
+                <div class="notif-icon">💬</div>
+                <div class="notif-content">
+                    <div class="notif-title">María González te envió un mensaje</div>
+                    <div class="notif-text">"Hola, vi tu publicación sobre Max..."</div>
+                    <div class="notif-time">Hace 45 minutos</div>
+                </div>
+                <div class="notif-dot"></div>
+            </div>
+
+            <div class="notif-item">
+                <div class="notif-icon">📍</div>
+                <div class="notif-content">
+                    <div class="notif-title">Nuevo avistamiento en tu zona</div>
+                    <div class="notif-text">Se reportó un perro similar a Max en Parque Central</div>
+                    <div class="notif-time">Hace 2 horas</div>
+                </div>
+                <div class="notif-dot"></div>
+            </div>
+
+            <div class="notif-item read">
+                <div class="notif-icon">✅</div>
+                <div class="notif-content">
+                    <div class="notif-title">Tu reporte ha sido difundido</div>
+                    <div class="notif-text">El reporte de Max llegó a 245 personas en tu zona</div>
+                    <div class="notif-time">Hace 5 horas</div>
+                </div>
+                <div class="notif-dot"></div>
+            </div>
+
+            <div class="notif-item read">
+                <div class="notif-icon">👤</div>
+                <div class="notif-content">
+                    <div class="notif-title">Carlos Pérez sigue tu reporte</div>
+                    <div class="notif-text">Carlos Pérez está siguiendo el reporte de Max</div>
+                    <div class="notif-time">Ayer</div>
+                </div>
+                <div class="notif-dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    VISTA 4: REGISTRO DE USUARIO
+    ============================================ -->
+    <div class="view-label">📝 Registro de Usuario</div>
+    <div class="phone-container">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 📶 🔋</span>
+        </div>
+
+        <div class="view-register">
+            <div class="app-icon text-center" style="font-size:40px; margin-bottom:4px;">🐾</div>
+            <div style="text-align:center; font-size:22px; font-weight:700; color:#000;">Crear cuenta</div>
+            <div style="text-align:center; color:#888; font-size:14px; margin-bottom:16px;">Únete a la comunidad</div>
+
+            <div class="step-indicator">
+                <span class="step-dot done"></span>
+                <span class="step-dot active"></span>
+                <span class="step-dot"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Nombre completo</label>
+                <input type="text" placeholder="Juan Pérez" value="Juan Pérez">
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" placeholder="juan@email.com" value="juan@email.com">
+            </div>
+
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" placeholder="••••••••" value="12345678">
+            </div>
+
+            <div class="form-group">
+                <label>Teléfono</label>
+                <input type="tel" placeholder="55 1234 5678" value="55 1234 5678">
+            </div>
+
+            <div class="form-group">
+                <label>Ciudad</label>
+                <select>
+                    <option>Ciudad de México</option>
+                    <option>Guadalajara</option>
+                    <option>Monterrey</option>
+                    <option>Puebla</option>
+                </select>
+            </div>
+
+            <button class="btn-primary mt-8">Continuar</button>
+
+            <p class="text-center mt-16 text-sm text-gray">
+                ¿Ya tienes cuenta? <strong style="color:#000;">Inicia sesión</strong>
+            </p>
+        </div>
+    </div>
+
+    <!-- ============================================
+    VISTA 5: MIS MASCOTAS
+    ============================================ -->
+    <div class="view-label">🐕 Mis Mascotas</div>
+    <div class="phone-container">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 📶 🔋</span>
+        </div>
+
+        <div class="view-my-pets">
+            <div class="header" style="border-bottom: 1px solid #e8e8e8; padding-bottom:16px;">
+                <div class="logo" style="font-size:18px;">🐕 Mis mascotas</div>
+                <button class="icon-btn" style="font-size:20px;">➕</button>
+            </div>
+
+            <div class="pet-list">
+                <div class="pet-item">
+                    <div class="pet-avatar">🐕</div>
+                    <div class="pet-info">
+                        <div class="pet-name">Max</div>
+                        <div class="pet-detail">Labrador · 3 años · Macho</div>
+                        <div style="font-size:12px; color:#999;">📍 Última ubicación: Parque Central</div>
+                    </div>
+                    <div class="pet-status-dot lost"></div>
+                </div>
+
+                <div class="pet-item">
+                    <div class="pet-avatar">🐈</div>
+                    <div class="pet-info">
+                        <div class="pet-name">Luna</div>
+                        <div class="pet-detail">Siamés · 2 años · Hembra</div>
+                        <div style="font-size:12px; color:#999;">📍 Última ubicación: Casa</div>
+                    </div>
+                    <div class="pet-status-dot safe"></div>
+                </div>
+
+                <div class="pet-item">
+                    <div class="pet-avatar">🐕</div>
+                    <div class="pet-info">
+                        <div class="pet-name">Rocky</div>
+                        <div class="pet-detail">Pastor Alemán · 4 años · Macho</div>
+                        <div style="font-size:12px; color:#999;">📍 Última ubicación: Zona Sur</div>
+                    </div>
+                    <div class="pet-status-dot lost"></div>
+                </div>
+
+                <div class="pet-item">
+                    <div class="pet-avatar">🐈</div>
+                    <div class="pet-info">
+                        <div class="pet-name">Milo</div>
+                        <div class="pet-detail">Naranja · 1 año · Macho</div>
+                        <div style="font-size:12px; color:#999;">📍 Última ubicación: En proceso</div>
+                    </div>
+                    <div class="pet-status-dot pending"></div>
+                </div>
+            </div>
+
+            <div style="margin-top:16px; padding:16px; background:#f7f7f7; border-radius:12px; text-align:center;">
+                <div style="font-size:14px; color:#666;">📊 Resumen</div>
+                <div style="display:flex; justify-content:center; gap:32px; margin-top:8px;">
+                    <div><span style="font-weight:700;color:#000;">4</span> <span style="color:#888;">Total</span></div>
+                    <div><span style="font-weight:700;color:#cc0000;">2</span> <span style="color:#888;">Perdidos</span></div>
+                    <div><span style="font-weight:700;color:#00aa00;">1</span> <span style="color:#888;">Seguros</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    VISTA 6: MAPA DE AVISTAMIENTOS
+    ============================================ -->
+    <div class="view-label">🗺️ Mapa de Avistamientos</div>
+    <div class="phone-container">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 📶 🔋</span>
+        </div>
+
+        <div class="view-map">
+            <div class="header" style="border-bottom: 1px solid #e8e8e8; padding-bottom:16px;">
+                <div class="logo" style="font-size:18px;">🗺️ Avistamientos</div>
+                <button class="icon-btn" style="font-size:20px;">🔍</button>
+            </div>
+
+            <div class="map-container">
+                <div class="map-placeholder">
+                    <span class="map-icon">🗺️</span>
+                    <div>Mapa interactivo</div>
+                    <div style="font-size:12px; color:#aaa;">Avistamientos cercanos</div>
+                </div>
+                <span class="map-marker m1">📍</span>
+                <span class="map-marker m2">📍</span>
+                <span class="map-marker m3">📍</span>
+                <span class="map-marker m4">📍</span>
+            </div>
+
+            <div class="map-legend">
+                <span class="legend-item">
+                    <span class="legend-dot red"></span> Perdido
+                </span>
+                <span class="legend-item">
+                    <span class="legend-dot green"></span> Encontrado
+                </span>
+                <span class="legend-item">
+                    <span class="legend-dot orange"></span> Avistamiento
+                </span>
+            </div>
+
+            <div class="card-gray">
+                <div style="font-weight:600; color:#000; margin-bottom:8px;">📋 Avistamientos recientes</div>
+                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #e8e8e8;">
+                    <div><span style="font-weight:600;">Max</span> - Parque Central</div>
+                    <div style="font-size:12px; color:#999;">Hace 1h</div>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #e8e8e8;">
+                    <div><span style="font-weight:600;">Rocky</span> - Zona Sur</div>
+                    <div style="font-size:12px; color:#999;">Hace 3h</div>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:8px 0;">
+                    <div><span style="font-weight:600;">Luna</span> - Barrio Norte</div>
+                    <div style="font-size:12px; color:#999;">Hace 5h</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+    VISTA 7: CHAT DETALLE
+    ============================================ -->
+    <div class="view-label">💬 Chat Detalle</div>
+    <div class="phone-container">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 📶 🔋</span>
+        </div>
+
+        <div class="view-chat">
+            <div class="header" style="border-bottom: 1px solid #e8e8e8; padding-bottom:16px;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <button class="icon-btn" style="font-size:20px;">‹</button>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="width:40px; height:40px; border-radius:50%; background:#e0e0e0; display:flex; align-items:center; justify-content:center; font-size:18px;">👩</div>
+                        <div>
+                            <div style="font-weight:600; color:#000;">María González</div>
+                            <div style="font-size:12px; color:#888;">En línea</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="icon-btn" style="font-size:20px;">📞</button>
+            </div>
+
+            <div class="chat-messages">
+                <div class="msg received">
+                    ¡Hola! Vi tu publicación sobre Max
+                    <span class="msg-time">10:30</span>
+                </div>
+                <div class="msg sent">
+                    ¡Hola! Sí, todavía no aparece 😢
+                    <span class="msg-time">10:32</span>
+                </div>
+                <div class="msg received">
+                    Creo que lo vi en Parque Central
+                    <span class="msg-time">10:35</span>
+                </div>
+                <div class="msg received">
+                    Tenía un collar rojo, ¿era él?
+                    <span class="msg-time">10:36</span>
+                </div>
+                <div class="msg sent">
+                    ¡Sí! Exactamente, collar rojo con placa. ¿Dónde?
+                    <span class="msg-time">10:38</span>
+                </div>
+                <div class="msg received">
+                    Cerca de la fuente, estaba con una señora
+                    <span class="msg-time">10:40</span>
+                </div>
+                <div class="msg sent">
+                    ¡Muchas gracias! Voy para allá ahora 🙏
+                    <span class="msg-time">10:42</span>
+                </div>
+                <div class="msg received">
+                    ¡Suerte! Te aviso si lo veo de nuevo
+                    <span class="msg-time">10:45</span>
+                </div>
+            </div>
+
+            <div class="chat-input">
+                <input type="text" placeholder="Escribe un mensaje...">
+                <button>📤</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startScan() {
+            const overlay = document.getElementById('scanningOverlay');
+            overlay.classList.add('active');
+
+            setTimeout(() => {
+                overlay.classList.remove('active');
+            }, 4000);
+        }
+    </script>
+
+</body>
+</html>

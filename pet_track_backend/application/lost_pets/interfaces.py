@@ -9,6 +9,10 @@ class LostPetReportRepository(ABC):
         pass
 
     @abstractmethod
+    def find_public(self, exclude_user_id: int = None) -> List[LostPetReport]:
+        pass
+
+    @abstractmethod
     def find_by_id(self, report_id: int) -> Optional[LostPetReport]:
         pass
 
@@ -17,8 +21,13 @@ class LostPetReportRepository(ABC):
         pass
 
     @abstractmethod
-    def create(self, user_id: int, name: str, photo: str, characteristics: str,
-               last_location: str, date_lost: str, contact_info: str) -> LostPetReport:
+    def create(self, user_id: int, name: Optional[str], photo: str,
+               characteristics: str, last_location: str, date_lost: str,
+               contact_info: str, report_type: str) -> LostPetReport:
+        pass
+
+    @abstractmethod
+    def update_status(self, report_id: int, report_status: str) -> Optional[LostPetReport]:
         pass
 
     @abstractmethod
