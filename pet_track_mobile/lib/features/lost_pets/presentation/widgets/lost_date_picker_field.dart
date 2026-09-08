@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../../theme/generated/figma_tokens.dart';
 
 class LostDatePickerField extends StatelessWidget {
   final DateTime? selectedDate;
@@ -75,12 +76,15 @@ class LostDatePickerField extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: SpacingToken.s),
         InkWell(
           onTap: () => _selectDate(context),
           borderRadius: BorderRadius.circular(14),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            padding: const EdgeInsets.symmetric(
+              horizontal: SpacingToken.m,
+              vertical: 14,
+            ),
             decoration: BoxDecoration(
               color: AppColors.inputFill,
               borderRadius: BorderRadius.circular(14),

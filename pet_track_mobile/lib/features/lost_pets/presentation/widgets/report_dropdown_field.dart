@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../theme/generated/figma_tokens.dart';
 
 class ReportDropdownField<T> extends StatelessWidget {
   final String label;
@@ -28,7 +29,7 @@ class ReportDropdownField<T> extends StatelessWidget {
           style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
           children: [if (isRequired) const TextSpan(text: ' *', style: TextStyle(color: Colors.redAccent))],
         )),
-        const SizedBox(height: 8),
+        const SizedBox(height: SpacingToken.s),
         DropdownButtonFormField<T>(
           initialValue: value,
           isExpanded: true,

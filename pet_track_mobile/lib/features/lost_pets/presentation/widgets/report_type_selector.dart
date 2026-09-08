@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../../theme/generated/figma_tokens.dart';
 import '../models/report_form_data.dart';
 
 class ReportTypeSelector extends StatelessWidget {
@@ -11,7 +12,7 @@ class ReportTypeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(SpacingToken.xS),
       decoration: BoxDecoration(color: const Color(0xFFF0F0F0), borderRadius: BorderRadius.circular(12)),
       child: Row(
         children: ReportType.values.map((type) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
+import '../../theme/generated/figma_tokens.dart';
 
 enum PetTrackDestination { profile, createReport, home, messages, settings }
 
@@ -100,7 +101,7 @@ class _NavigationItem extends StatelessWidget {
                 color: selected ? AppColors.primary : AppColors.textMuted,
                 size: 23,
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: SpacingToken.xS),
               Text(
                 label,
                 maxLines: 1,

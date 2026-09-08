@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../../theme/generated/figma_tokens.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
@@ -57,7 +58,7 @@ class CustomTextField extends StatelessWidget {
               ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: SpacingToken.s),
         TextFormField(
           controller: controller,
           maxLines: maxLines,
@@ -98,7 +99,7 @@ class CustomTextField extends StatelessWidget {
             filled: true,
             fillColor: AppColors.inputFill,
             contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
+              horizontal: SpacingToken.m,
               vertical: 14,
             ),
             border: OutlineInputBorder(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
+import '../../theme/generated/figma_tokens.dart';
 
 class LoadingWidget extends StatelessWidget {
   final String? message;
@@ -16,7 +17,7 @@ class LoadingWidget extends StatelessWidget {
             color: AppColors.primary,
           ),
           if (message != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: SpacingToken.m),
             Text(
               message!,
               style: const TextStyle(

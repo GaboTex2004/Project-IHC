@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../../theme/generated/figma_tokens.dart';
 
 class PetTrackHeader extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -26,14 +27,14 @@ class PetTrackHeader extends StatelessWidget implements PreferredSizeWidget {
               icon: const Icon(Icons.arrow_back_rounded),
             )
           : null,
-      titleSpacing: showBackButton ? 0 : 16,
+      titleSpacing: showBackButton ? 0 : SpacingToken.m,
       title: title != null
           ? Text(title!, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800))
           : const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(Icons.pets_rounded, color: AppColors.primary, size: 25),
-                SizedBox(width: 8),
+                SizedBox(width: SpacingToken.s),
                 Text('Pet Track', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
               ],
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../../theme/generated/figma_tokens.dart';
 import '../models/pet_status.dart';
 import '../models/report_form_data.dart';
 import 'status_badge.dart';
@@ -32,12 +33,13 @@ class ReportSummaryCard extends StatelessWidget {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Text(data.displayName, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
-                    if (data.reportType == ReportType.homeless) const StatusBadge(status: PetStatus.homeless),
+                    if (data.reportType == ReportType.homeless)
+                      const StatusBadge(status: PetStatus.homeless),
                   ],
                 ),
                 const SizedBox(height: 5),
                 Text(data.descriptionLine, style: const TextStyle(fontSize: 13, color: AppColors.textSecondary)),
-                const SizedBox(height: 4),
+                const SizedBox(height: SpacingToken.xS),
                 Row(children: [
                   const Icon(Icons.location_on_outlined, size: 15, color: AppColors.textMuted),
                   const SizedBox(width: 3),

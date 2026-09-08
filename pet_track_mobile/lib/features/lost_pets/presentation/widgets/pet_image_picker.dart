@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../../theme/generated/figma_tokens.dart';
 import '../models/report_form_data.dart';
 
 class PetImagePicker extends StatelessWidget {
@@ -64,14 +65,19 @@ class PetImagePicker extends StatelessWidget {
       showDragHandle: true,
       builder: (sheetContext) => SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+          padding: const EdgeInsets.fromLTRB(
+            SpacingToken.m,
+            0,
+            SpacingToken.m,
+            20,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text('Agregar fotografías', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
-              const SizedBox(height: 8),
+              const SizedBox(height: SpacingToken.s),
               const Text('La primera foto se enviará al servidor actual.', style: TextStyle(color: AppColors.textSecondary)),
-              const SizedBox(height: 16),
+              const SizedBox(height: SpacingToken.m),
               ListTile(
                 leading: const CircleAvatar(child: Icon(Icons.camera_alt_outlined)),
                 title: const Text('Tomar una fotografía'),
@@ -95,7 +101,7 @@ class PetImagePicker extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text('Fotos *', style: TextStyle(fontWeight: FontWeight.w600)),
-        const SizedBox(height: 8),
+        const SizedBox(height: SpacingToken.s),
         if (photos.isEmpty)
           InkWell(
             onTap: () => _showSourceSheet(context),
@@ -114,7 +120,7 @@ class PetImagePicker extends StatelessWidget {
                   Icon(Icons.add_a_photo_outlined, size: 38),
                   SizedBox(height: 10),
                   Text('Toca para agregar fotos', style: TextStyle(fontWeight: FontWeight.w700)),
-                  SizedBox(height: 4),
+                  SizedBox(height: SpacingToken.xS),
                   Text('Máximo 5 fotos', style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
                 ],
               ),
