@@ -18,6 +18,7 @@ class CreateReportUseCase {
       lastLocation: params.lastLocation,
       dateLost: params.dateLost,
       contactInfo: params.contactInfo,
+      reportType: params.reportType,
     );
   }
 }
@@ -30,6 +31,7 @@ class CreateReportParams extends Equatable {
   final String lastLocation;
   final String dateLost;
   final String contactInfo;
+  final String reportType;
 
   const CreateReportParams({
     required this.name,
@@ -39,8 +41,18 @@ class CreateReportParams extends Equatable {
     required this.lastLocation,
     required this.dateLost,
     required this.contactInfo,
+    required this.reportType,
   });
 
   @override
-  List<Object> get props => [name, photoBytes, photoName, characteristics, lastLocation, dateLost, contactInfo];
+  List<Object> get props => [
+    name,
+    photoBytes,
+    photoName,
+    characteristics,
+    lastLocation,
+    dateLost,
+    contactInfo,
+    reportType,
+  ];
 }

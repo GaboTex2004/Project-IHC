@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme/generated/figma_tokens.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -47,7 +48,7 @@ class CustomButton extends StatelessWidget {
                 children: [
                   if (icon != null) ...[
                     Icon(icon, size: 20),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: SpacingToken.s),
                   ],
                   Text(
                     text,

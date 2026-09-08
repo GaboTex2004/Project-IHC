@@ -3,3 +3,5 @@
 
 # Variables de entorno
 .env
+**/.env
+pet_track_backend/media/

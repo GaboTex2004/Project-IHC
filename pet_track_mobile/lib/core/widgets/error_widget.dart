@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme/generated/figma_tokens.dart';
 
 class ErrorDisplayWidget extends StatelessWidget {
   final String message;
@@ -13,7 +14,7 @@ class ErrorDisplayWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(SpacingToken.m),
       decoration: BoxDecoration(
         color: Colors.red.shade50,
         borderRadius: BorderRadius.circular(12),
@@ -29,7 +30,7 @@ class ErrorDisplayWidget extends StatelessWidget {
             style: TextStyle(color: Colors.red.shade700, fontSize: 14),
           ),
           if (onRetry != null) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: SpacingToken.m),
             ElevatedButton.icon(
               onPressed: onRetry,
               icon: const Icon(Icons.refresh, size: 18),

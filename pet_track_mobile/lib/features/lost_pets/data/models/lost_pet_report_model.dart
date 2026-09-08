@@ -10,6 +10,8 @@ class LostPetReportModel {
   final String lastLocation;
   final String dateLost;
   final String contactInfo;
+  final String reportType;
+  final String status;
   final String createdAt;
 
   LostPetReportModel({
@@ -21,6 +23,8 @@ class LostPetReportModel {
     required this.lastLocation,
     required this.dateLost,
     required this.contactInfo,
+    this.reportType = 'LOST',
+    this.status = 'ACTIVE',
     this.createdAt = '',
   });
 
@@ -35,12 +39,14 @@ class LostPetReportModel {
     return LostPetReportModel(
       id: json['id'],
       userId: json['user_id'],
-      name: json['name'],
+      name: json['name'] ?? '',
       photo: _fullPhotoUrl(json['photo'] ?? ''),
       characteristics: json['characteristics'],
       lastLocation: json['last_location'],
       dateLost: json['date_lost'],
       contactInfo: json['contact_info'],
+      reportType: json['report_type'] ?? 'LOST',
+      status: json['status'] ?? 'ACTIVE',
       createdAt: json['created_at'] ?? '',
     );
   }
@@ -54,6 +60,8 @@ class LostPetReportModel {
     lastLocation: lastLocation,
     dateLost: dateLost,
     contactInfo: contactInfo,
+    reportType: reportType,
+    status: status,
     createdAt: createdAt,
   );
 
@@ -67,6 +75,8 @@ class LostPetReportModel {
       'last_location': lastLocation,
       'date_lost': dateLost,
       'contact_info': contactInfo,
+      'report_type': reportType,
+      'status': status,
       'created_at': createdAt,
     };
   }

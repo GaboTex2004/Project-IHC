@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'generated/figma_tokens.dart';
 
 class AppColors {
-  static const Color primary = Color(0xFF6C63FF);
-  static const Color primaryDark = Color(0xFF4D44D5);
-  static const Color secondary = Color(0xFFFF9800);
-  static const Color background = Color(0xFFF8F9FE);
-  static const Color surface = Colors.white;
-  static const Color textPrimary = Color(0xFF1E293B);
-  static const Color textSecondary = Color(0xFF64748B);
-  static const Color border = Color(0xFFE2E8F0);
-  static const Color error = Color(0xFFEF4444);
-  static const Color success = Color(0xFF4CAF50);
+  static const Color primary = ColorStyles.gray700;
+  static const Color primaryDark = ColorStyles.textBase;
+  static const Color secondary = Color(0xFFFF8800);
+  static const Color background = Color(0xFFF4F4F4);
+  static const Color surface = ColorStyles.textInverse;
+  static const Color surfaceMuted = Color(0xFFF7F7F7);
+  static const Color inputFill = Color(0xFFFAFAFA);
+  static const Color textPrimary = ColorStyles.gray700;
+  static const Color textSecondary = ColorStyles.gray400;
+  static const Color textMuted = Color(0xFF999999);
+  static const Color border = Color(0xFFE0E0E0);
+  static const Color error = Color(0xFFCC0000);
+  static const Color success = Color(0xFF00AA00);
+  static const Color warningSurface = Color(0xFFFFF8E8);
+  static const Color successSurface = Color(0xFFE8F5E8);
 }

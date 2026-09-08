@@ -5,6 +5,7 @@ import '../../../../core/utils/validators.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
+import '../../../../theme/generated/figma_tokens.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -75,10 +76,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: [
                   const Text('Crear Cuenta',
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFF1E293B))),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: SpacingToken.s),
                   const Text('Regístrate para empezar a buscar mascotas',
                     style: TextStyle(fontSize: 14, color: Color(0xFF64748B))),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: SpacingToken.xL),
                   TextFormField(
                     controller: _usernameController,
                     decoration: InputDecoration(
@@ -89,7 +90,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     validator: (value) => Validators.validateRequired(value, 'Usuario'),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: SpacingToken.m),
                   TextFormField(
                     controller: _firstNameController,
                     decoration: InputDecoration(
@@ -100,7 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     validator: (value) => Validators.validateRequired(value, 'Nombre'),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: SpacingToken.m),
                   TextFormField(
                     controller: _lastNameController,
                     decoration: InputDecoration(
@@ -111,7 +112,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     validator: (value) => Validators.validateRequired(value, 'Apellido'),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: SpacingToken.m),
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -123,7 +124,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     validator: Validators.validateEmail,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: SpacingToken.m),
                   TextFormField(
                     controller: _passwordController,
                     obscureText: _obscurePassword,
@@ -139,7 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     validator: Validators.validatePassword,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: SpacingToken.m),
                   TextFormField(
                     controller: _confirmPasswordController,
                     obscureText: _obscureConfirm,
@@ -160,7 +161,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: SpacingToken.l),
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       return CustomButton(
@@ -170,7 +171,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       );
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: SpacingToken.m),
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
                     child: const Text('¿Ya tienes cuenta? Inicia sesión',

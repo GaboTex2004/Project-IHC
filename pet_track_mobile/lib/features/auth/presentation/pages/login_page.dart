@@ -7,6 +7,7 @@ import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 import 'register_page.dart';
 import '../../../lost_pets/presentation/pages/home_page.dart';
+import '../../../../theme/generated/figma_tokens.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -70,10 +71,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     child: const Icon(Icons.pets_rounded, size: 48, color: Color(0xFF6C63FF)),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: SpacingToken.l),
                   const Text('Pet Track', textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFF1E293B))),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: SpacingToken.s),
                   const Text('Inicia sesión para continuar', textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 14, color: Color(0xFF64748B))),
                   const SizedBox(height: 40),
@@ -87,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     validator: (value) => Validators.validateRequired(value, 'Usuario'),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: SpacingToken.m),
                   TextFormField(
                     controller: _passwordController,
                     obscureText: _obscurePassword,
@@ -103,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     validator: Validators.validatePassword,
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: SpacingToken.l),
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       return CustomButton(
@@ -113,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                       );
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: SpacingToken.m),
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).push(

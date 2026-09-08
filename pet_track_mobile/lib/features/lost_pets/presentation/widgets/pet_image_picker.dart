@@ -1,122 +1,92 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../../theme/app_colors.dart';
+import '../../../../theme/generated/figma_tokens.dart';
+import '../models/report_form_data.dart';
 
 class PetImagePicker extends StatelessWidget {
-  final File? selectedImage;
-  final ValueChanged<File> onImageSelected;
-  final VoidCallback onImageRemoved;
+  static const int maxPhotos = 5;
+  final List<ReportPhoto> photos;
+  final ValueChanged<List<ReportPhoto>> onChanged;
 
-  const PetImagePicker({
-    super.key,
-    required this.selectedImage,
-    required this.onImageSelected,
-    required this.onImageRemoved,
-  });
+  const PetImagePicker({super.key, required this.photos, required this.onChanged});
 
-  Future<void> _pickImage(BuildContext context, ImageSource source) async {
-    Navigator.of(context).pop(); // Cerrar el modal bottom sheet
-    final picker = ImagePicker();
+  Future<ReportPhoto?> _toPhoto(XFile file) async {
     try {
-      final pickedFile = await picker.pickImage(
-        source: source,
-        maxWidth: 1600,
-        maxHeight: 1600,
-        imageQuality: 85,
-      );
-
-      if (pickedFile != null) {
-        onImageSelected(File(pickedFile.path));
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error al seleccionar imagen: $e'),
-            backgroundColor: Colors.redAccent,
-          ),
-        );
-      }
+      return ReportPhoto(bytes: await file.readAsBytes(), name: file.name);
+    } catch (_) {
+      return null;
     }
   }
 
-  void _showImageSourceDialog(BuildContext context) {
-    showModalBottomSheet(
+  Future<void> _pickFromGallery(BuildContext context) async {
+    Navigator.of(context).pop();
+    try {
+      final files = await ImagePicker().pickMultiImage(
+        imageQuality: 85,
+        maxWidth: 1600,
+        maxHeight: 1600,
+        limit: maxPhotos - photos.length,
+      );
+      final converted = await Future.wait(files.map(_toPhoto));
+      onChanged([...photos, ...converted.whereType<ReportPhoto>()].take(maxPhotos).toList());
+    } catch (_) {
+      if (context.mounted) _showError(context);
+    }
+  }
+
+  Future<void> _takePhoto(BuildContext context) async {
+    Navigator.of(context).pop();
+    try {
+      final file = await ImagePicker().pickImage(
+        source: ImageSource.camera,
+        imageQuality: 85,
+        maxWidth: 1600,
+        maxHeight: 1600,
+      );
+      if (file == null) return;
+      final photo = await _toPhoto(file);
+      if (photo != null) onChanged([...photos, photo].take(maxPhotos).toList());
+    } catch (_) {
+      if (context.mounted) _showError(context);
+    }
+  }
+
+  void _showError(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('No se pudo obtener la fotografía. Inténtalo nuevamente.')),
+    );
+  }
+
+  void _showSourceSheet(BuildContext context) {
+    if (photos.length >= maxPhotos) return;
+    showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (ctx) => SafeArea(
+      showDragHandle: true,
+      builder: (sheetContext) => SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          padding: const EdgeInsets.fromLTRB(
+            SpacingToken.m,
+            0,
+            SpacingToken.m,
+            20,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Seleccionar Fotografía',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF1E293B),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Elige cómo deseas adjuntar la foto de la mascota',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.grey.shade600,
-                ),
-              ),
-              const SizedBox(height: 20),
+              const Text('Agregar fotografías', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+              const SizedBox(height: SpacingToken.s),
+              const Text('La primera foto se enviará al servidor actual.', style: TextStyle(color: AppColors.textSecondary)),
+              const SizedBox(height: SpacingToken.m),
               ListTile(
-                leading: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF6C63FF).withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.camera_alt_rounded,
-                    color: Color(0xFF6C63FF),
-                  ),
-                ),
-                title: const Text(
-                  'Tomar Fotografía',
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                ),
-                subtitle: const Text('Usa la cámara de tu dispositivo'),
-                onTap: () => _pickImage(context, ImageSource.camera),
+                leading: const CircleAvatar(child: Icon(Icons.camera_alt_outlined)),
+                title: const Text('Tomar una fotografía'),
+                onTap: () => _takePhoto(sheetContext),
               ),
-              const SizedBox(height: 8),
               ListTile(
-                leading: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF3F3D99).withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.photo_library_rounded,
-                    color: Color(0xFF3F3D99),
-                  ),
-                ),
-                title: const Text(
-                  'Elegir de la Galería',
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                ),
-                subtitle: const Text('Selecciona una imagen guardada'),
-                onTap: () => _pickImage(context, ImageSource.gallery),
+                leading: const CircleAvatar(child: Icon(Icons.photo_library_outlined)),
+                title: const Text('Elegir de la galería'),
+                onTap: () => _pickFromGallery(sheetContext),
               ),
             ],
           ),
@@ -127,142 +97,94 @@ class PetImagePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const primaryColor = Color(0xFF6C63FF);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Fotografía de la Mascota *',
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF334155),
-          ),
-        ),
-        const SizedBox(height: 8),
-        if (selectedImage == null)
-          // Placeholder para seleccionar imagen
+        const Text('Fotos *', style: TextStyle(fontWeight: FontWeight.w600)),
+        const SizedBox(height: SpacingToken.s),
+        if (photos.isEmpty)
           InkWell(
-            onTap: () => _showImageSourceDialog(context),
-            borderRadius: BorderRadius.circular(20),
+            onTap: () => _showSourceSheet(context),
+            borderRadius: BorderRadius.circular(12),
             child: Container(
+              height: 150,
               width: double.infinity,
-              height: 190,
               decoration: BoxDecoration(
-                color: const Color(0xFFF8F9FE),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: primaryColor.withValues(alpha: 0.35),
-                  width: 1.8,
-                  strokeAlign: BorderSide.strokeAlignInside,
-                ),
+                color: AppColors.inputFill,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.textMuted, width: 1.5),
               ),
-              child: Column(
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 68,
-                    height: 68,
-                    decoration: BoxDecoration(
-                      color: primaryColor.withValues(alpha: 0.12),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.add_a_photo_rounded,
-                      size: 32,
-                      color: primaryColor,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'Subir foto de la mascota',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF1E293B),
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Formatos JPG, PNG (Cámara o Galería)',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey.shade600,
-                    ),
-                  ),
+                  Icon(Icons.add_a_photo_outlined, size: 38),
+                  SizedBox(height: 10),
+                  Text('Toca para agregar fotos', style: TextStyle(fontWeight: FontWeight.w700)),
+                  SizedBox(height: SpacingToken.xS),
+                  Text('Máximo 5 fotos', style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
                 ],
               ),
             ),
           )
         else
-          // Vista previa de la imagen seleccionada con controles
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 220,
-                  child: Image.file(
-                    selectedImage!,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              // Sombra en la parte superior para visibilidad de botones
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(20),
+          SizedBox(
+            height: 112,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: photos.length < maxPhotos ? photos.length + 1 : photos.length,
+              separatorBuilder: (_, __) => const SizedBox(width: 10),
+              itemBuilder: (context, index) {
+                if (index == photos.length) {
+                  return InkWell(
+                    onTap: () => _showSourceSheet(context),
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      width: 90,
+                      decoration: BoxDecoration(
+                        color: AppColors.inputFill,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppColors.border),
+                      ),
+                      child: const Icon(Icons.add_rounded, size: 32),
                     ),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.black.withValues(alpha: 0.5),
-                        Colors.transparent,
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              // Botones de acción (Cambiar / Eliminar)
-              Positioned(
-                top: 12,
-                right: 12,
-                child: Row(
+                  );
+                }
+                return Stack(
                   children: [
-                    IconButton.filled(
-                      onPressed: () => _showImageSourceDialog(context),
-                      icon: const Icon(Icons.edit_rounded, size: 18),
-                      style: IconButton.styleFrom(
-                        backgroundColor: Colors.white.withValues(alpha: 0.9),
-                        foregroundColor: const Color(0xFF1E293B),
-                        padding: const EdgeInsets.all(8),
-                      ),
-                      tooltip: 'Cambiar imagen',
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.memory(photos[index].bytes, width: 112, height: 112, fit: BoxFit.cover),
                     ),
-                    const SizedBox(width: 8),
-                    IconButton.filled(
-                      onPressed: onImageRemoved,
-                      icon: const Icon(Icons.delete_outline_rounded, size: 18),
-                      style: IconButton.styleFrom(
-                        backgroundColor: Colors.redAccent.withValues(alpha: 0.9),
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.all(8),
+                    Positioned(
+                      top: 5,
+                      right: 5,
+                      child: IconButton.filled(
+                        visualDensity: VisualDensity.compact,
+                        iconSize: 17,
+                        style: IconButton.styleFrom(backgroundColor: Colors.black.withValues(alpha: 0.7)),
+                        onPressed: () {
+                          final updated = [...photos]..removeAt(index);
+                          onChanged(updated);
+                        },
+                        icon: const Icon(Icons.close, color: Colors.white),
                       ),
-                      tooltip: 'Eliminar imagen',
                     ),
+                    if (index == 0)
+                      const Positioned(
+                        left: 6,
+                        bottom: 6,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(color: Colors.black87, borderRadius: BorderRadius.all(Radius.circular(6))),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                            child: Text('Principal', style: TextStyle(color: Colors.white, fontSize: 10)),
+                          ),
+                        ),
+                      ),
                   ],
-                ),
-              ),
-            ],
+                );
+              },
+            ),
           ),
       ],
     );

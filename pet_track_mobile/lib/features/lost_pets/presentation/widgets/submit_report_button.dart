@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../theme/app_colors.dart';
 
 class SubmitReportButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -14,9 +15,6 @@ class SubmitReportButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const primaryColor = Color(0xFF6C63FF);
-    const secondaryColor = Color(0xFF4D44D5);
-
     return Container(
       width: double.infinity,
       height: 54,
@@ -25,7 +23,7 @@ class SubmitReportButton extends StatelessWidget {
         gradient: onPressed == null || isLoading
             ? null
             : const LinearGradient(
-                colors: [primaryColor, secondaryColor],
+                colors: [AppColors.primary, AppColors.primaryDark],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
               ),
@@ -33,7 +31,7 @@ class SubmitReportButton extends StatelessWidget {
             ? []
             : [
                 BoxShadow(
-                  color: primaryColor.withValues(alpha: 0.35),
+                  color: AppColors.primary.withValues(alpha: 0.25),
                   blurRadius: 14,
                   offset: const Offset(0, 6),
                 ),
