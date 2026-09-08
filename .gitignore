@@ -1,1 +1,5 @@
+# Archivos ignorados
+.ignore
+
+# Variables de entorno
 .env
