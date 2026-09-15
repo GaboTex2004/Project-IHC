@@ -6,10 +6,18 @@ import '../models/report_form_data.dart';
 
 class PetImagePicker extends StatelessWidget {
   static const int maxPhotos = 5;
+  final int maxPhotosAllowed;
+  final bool requiredPhoto;
   final List<ReportPhoto> photos;
   final ValueChanged<List<ReportPhoto>> onChanged;
 
-  const PetImagePicker({super.key, required this.photos, required this.onChanged});
+  const PetImagePicker({
+    super.key,
+    required this.photos,
+    required this.onChanged,
+    this.maxPhotosAllowed = maxPhotos,
+    this.requiredPhoto = true,
+  });
 
   Future<ReportPhoto?> _toPhoto(XFile file) async {
     try {
@@ -26,10 +34,15 @@ class PetImagePicker extends StatelessWidget {
         imageQuality: 85,
         maxWidth: 1600,
         maxHeight: 1600,
-        limit: maxPhotos - photos.length,
+        limit: maxPhotosAllowed - photos.length,
       );
       final converted = await Future.wait(files.map(_toPhoto));
-      onChanged([...photos, ...converted.whereType<ReportPhoto>()].take(maxPhotos).toList());
+      onChanged(
+        [
+          ...photos,
+          ...converted.whereType<ReportPhoto>(),
+        ].take(maxPhotosAllowed).toList(),
+      );
     } catch (_) {
       if (context.mounted) _showError(context);
     }
@@ -46,7 +59,9 @@ class PetImagePicker extends StatelessWidget {
       );
       if (file == null) return;
       final photo = await _toPhoto(file);
-      if (photo != null) onChanged([...photos, photo].take(maxPhotos).toList());
+      if (photo != null) {
+        onChanged([...photos, photo].take(maxPhotosAllowed).toList());
+      }
     } catch (_) {
       if (context.mounted) _showError(context);
     }
@@ -54,12 +69,16 @@ class PetImagePicker extends StatelessWidget {
 
   void _showError(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('No se pudo obtener la fotografía. Inténtalo nuevamente.')),
+      const SnackBar(
+        content: Text(
+          'No se pudo obtener la fotografía. Inténtalo nuevamente.',
+        ),
+      ),
     );
   }
 
   void _showSourceSheet(BuildContext context) {
-    if (photos.length >= maxPhotos) return;
+    if (photos.length >= maxPhotosAllowed) return;
     showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
@@ -74,17 +93,29 @@ class PetImagePicker extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('Agregar fotografías', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+              const Text(
+                'Agregar fotografías',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+              ),
               const SizedBox(height: SpacingToken.s),
-              const Text('La primera foto se enviará al servidor actual.', style: TextStyle(color: AppColors.textSecondary)),
+              Text(
+                requiredPhoto
+                    ? 'La primera foto se enviará al servidor actual.'
+                    : 'La fotografía es opcional.',
+                style: const TextStyle(color: AppColors.textSecondary),
+              ),
               const SizedBox(height: SpacingToken.m),
               ListTile(
-                leading: const CircleAvatar(child: Icon(Icons.camera_alt_outlined)),
+                leading: const CircleAvatar(
+                  child: Icon(Icons.camera_alt_outlined),
+                ),
                 title: const Text('Tomar una fotografía'),
                 onTap: () => _takePhoto(sheetContext),
               ),
               ListTile(
-                leading: const CircleAvatar(child: Icon(Icons.photo_library_outlined)),
+                leading: const CircleAvatar(
+                  child: Icon(Icons.photo_library_outlined),
+                ),
                 title: const Text('Elegir de la galería'),
                 onTap: () => _pickFromGallery(sheetContext),
               ),
@@ -100,7 +131,10 @@ class PetImagePicker extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Fotos *', style: TextStyle(fontWeight: FontWeight.w600)),
+        Text(
+          requiredPhoto ? 'Fotos *' : 'Fotografía opcional',
+          style: const TextStyle(fontWeight: FontWeight.w600),
+        ),
         const SizedBox(height: SpacingToken.s),
         if (photos.isEmpty)
           InkWell(
@@ -114,14 +148,23 @@ class PetImagePicker extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppColors.textMuted, width: 1.5),
               ),
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.add_a_photo_outlined, size: 38),
-                  SizedBox(height: 10),
-                  Text('Toca para agregar fotos', style: TextStyle(fontWeight: FontWeight.w700)),
-                  SizedBox(height: SpacingToken.xS),
-                  Text('Máximo 5 fotos', style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                  const Icon(Icons.add_a_photo_outlined, size: 38),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Toca para agregar fotos',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  const SizedBox(height: SpacingToken.xS),
+                  Text(
+                    'Máximo $maxPhotosAllowed ${maxPhotosAllowed == 1 ? 'foto' : 'fotos'}',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textMuted,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -131,8 +174,10 @@ class PetImagePicker extends StatelessWidget {
             height: 112,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              itemCount: photos.length < maxPhotos ? photos.length + 1 : photos.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 10),
+              itemCount: photos.length < maxPhotosAllowed
+                  ? photos.length + 1
+                  : photos.length,
+              separatorBuilder: (_, _) => const SizedBox(width: 10),
               itemBuilder: (context, index) {
                 if (index == photos.length) {
                   return InkWell(
@@ -153,7 +198,12 @@ class PetImagePicker extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.memory(photos[index].bytes, width: 112, height: 112, fit: BoxFit.cover),
+                      child: Image.memory(
+                        photos[index].bytes,
+                        width: 112,
+                        height: 112,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     Positioned(
                       top: 5,
@@ -161,7 +211,9 @@ class PetImagePicker extends StatelessWidget {
                       child: IconButton.filled(
                         visualDensity: VisualDensity.compact,
                         iconSize: 17,
-                        style: IconButton.styleFrom(backgroundColor: Colors.black.withValues(alpha: 0.7)),
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.black.withValues(alpha: 0.7),
+                        ),
                         onPressed: () {
                           final updated = [...photos]..removeAt(index);
                           onChanged(updated);
@@ -174,10 +226,22 @@ class PetImagePicker extends StatelessWidget {
                         left: 6,
                         bottom: 6,
                         child: DecoratedBox(
-                          decoration: BoxDecoration(color: Colors.black87, borderRadius: BorderRadius.all(Radius.circular(6))),
+                          decoration: BoxDecoration(
+                            color: Colors.black87,
+                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                          ),
                           child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                            child: Text('Principal', style: TextStyle(color: Colors.white, fontSize: 10)),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 7,
+                              vertical: 4,
+                            ),
+                            child: Text(
+                              'Principal',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                              ),
+                            ),
                           ),
                         ),
                       ),

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/widgets/pet_track_bottom_navigation.dart';
 import '../../../../injection/injection.dart';
 import '../../../../theme/app_colors.dart';
-import '../../../lost_pets/presentation/pages/create_report_page.dart';
+import '../../../lost_pets/presentation/pages/report_creation_launcher.dart';
 import '../../../lost_pets/presentation/widgets/pet_track_header.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
 import '../../domain/entities/conversation.dart';
@@ -30,9 +30,7 @@ class _MessagesView extends StatelessWidget {
           MaterialPageRoute(builder: (_) => const ProfilePage()),
         );
       case PetTrackDestination.createReport:
-        Navigator.of(
-          context,
-        ).push(MaterialPageRoute(builder: (_) => const CreateReportPage()));
+        openCreateReport(context);
       case PetTrackDestination.home:
         Navigator.of(context).popUntil((route) => route.isFirst);
       case PetTrackDestination.messages:

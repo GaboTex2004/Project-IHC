@@ -12,7 +12,7 @@ import '../bloc/lost_pet_event.dart';
 import '../bloc/lost_pet_state.dart';
 import '../widgets/pet_track_header.dart';
 import '../widgets/report_card.dart';
-import 'create_report_page.dart';
+import 'report_creation_launcher.dart';
 import 'report_detail_page.dart';
 
 enum _ReportFilter { all, recent, withPhoto }
@@ -61,11 +61,7 @@ class _HomePageState extends State<HomePage> {
     return reports;
   }
 
-  void _openCreateReport() {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (_) => const CreateReportPage()));
-  }
+  void _openCreateReport() => openCreateReport(context);
 
   void _openDetail(LostPetReport report) {
     Navigator.of(context).push(

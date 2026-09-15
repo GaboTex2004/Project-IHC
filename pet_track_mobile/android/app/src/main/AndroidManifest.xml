@@ -37,7 +37,6 @@
     <!-- Permisos para geolocalización (Geolocator) -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- Opcional: para ubicación en segundo plano -->
 
 
     <!-- Para Android 13+ (API 33+) necesitas este permiso para notificaciones -->

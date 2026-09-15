@@ -23,6 +23,14 @@ import '../features/chat/domain/usecases/get_messages_usecase.dart';
 import '../features/chat/domain/usecases/get_or_create_conversation_usecase.dart';
 import '../features/chat/domain/usecases/send_message_usecase.dart';
 import '../features/chat/presentation/bloc/chat_bloc.dart';
+import '../features/sightings/data/datasources/device_location_datasource.dart';
+import '../features/sightings/data/datasources/sighting_remote_datasource.dart';
+import '../features/sightings/data/repositories/sighting_repository_impl.dart';
+import '../features/sightings/domain/repositories/sighting_repository.dart';
+import '../features/sightings/domain/usecases/create_sighting_usecase.dart';
+import '../features/sightings/domain/usecases/get_current_position_usecase.dart';
+import '../features/sightings/domain/usecases/get_report_sightings_usecase.dart';
+import '../features/sightings/presentation/bloc/sighting_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -96,6 +104,22 @@ void init() {
       getOrCreateConversation: sl(),
       getMessages: sl(),
       sendMessage: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton(() => DeviceLocationDataSource());
+  sl.registerLazySingleton(() => GetCurrentPositionUseCase(dataSource: sl()));
+  sl.registerLazySingleton(() => SightingRemoteDataSource(tokenStorage: sl()));
+  sl.registerLazySingleton<SightingRepository>(
+    () => SightingRepositoryImpl(remoteDataSource: sl()),
+  );
+  sl.registerLazySingleton(() => CreateSightingUseCase(repository: sl()));
+  sl.registerLazySingleton(() => GetReportSightingsUseCase(repository: sl()));
+  sl.registerFactory(
+    () => SightingBloc(
+      getCurrentPosition: sl(),
+      createSighting: sl(),
+      getReportSightings: sl(),
     ),
   );
 }

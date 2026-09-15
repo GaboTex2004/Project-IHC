@@ -7,7 +7,7 @@ import '../../../auth/presentation/bloc/auth_state.dart';
 import '../../../auth/presentation/bloc/auth_event.dart';
 import '../../../auth/presentation/pages/login_page.dart';
 import '../../../chat/presentation/pages/messages_page.dart';
-import '../../../lost_pets/presentation/pages/create_report_page.dart';
+import '../../../lost_pets/presentation/pages/report_creation_launcher.dart';
 import '../../../lost_pets/presentation/pages/my_reports_page.dart';
 import '../../../lost_pets/presentation/bloc/lost_pet_bloc.dart';
 import '../../../lost_pets/presentation/bloc/lost_pet_event.dart';
@@ -65,9 +65,7 @@ class ProfilePage extends StatelessWidget {
       case PetTrackDestination.profile:
         return;
       case PetTrackDestination.createReport:
-        Navigator.of(
-          context,
-        ).push(MaterialPageRoute(builder: (_) => const CreateReportPage()));
+        openCreateReport(context);
         return;
       case PetTrackDestination.home:
         Navigator.of(context).popUntil((route) => route.isFirst);

@@ -19,6 +19,8 @@ dependencies:
   flutter_secure_storage: ^10.3.1
   speech_to_text: ^7.3.0
   image_picker: ^1.2.1
+  geolocator: 14.0.2
+  url_launcher: ^6.3.2
   dio: ^5.9.2
   get_it: ^9.2.1
   file_picker: ^8.1.7

@@ -15,6 +15,8 @@ import '../../../chat/presentation/bloc/chat_bloc.dart';
 import '../../../chat/presentation/bloc/chat_event.dart';
 import '../../../chat/presentation/bloc/chat_state.dart';
 import '../../../chat/presentation/pages/chat_page.dart';
+import '../../../sightings/presentation/pages/sighting_flow_page.dart';
+import '../../../sightings/presentation/pages/report_sightings_page.dart';
 
 class ReportDetailPage extends StatelessWidget {
   final int reportId;
@@ -124,6 +126,13 @@ class _ReportDetailContent extends StatelessWidget {
         ? authState.user.id
         : -1;
     final canContact = report.isActive && report.userId != currentUserId;
+    final canReportSighting =
+        authState is AuthAuthenticated &&
+        report.canReportSightingBy(currentUserId);
+    final canViewSightings =
+        authState is AuthAuthenticated &&
+        report.reportType == 'LOST' &&
+        report.userId == currentUserId;
     final opening = context.watch<ChatBloc>().state is ChatLoading;
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
@@ -236,6 +245,26 @@ class _ReportDetailContent extends StatelessWidget {
                         : () => context.read<ChatBloc>().add(
                             OpenConversation(report.id),
                           ),
+                  ),
+                if (canReportSighting)
+                  _ActionButton(
+                    icon: Icons.visibility_outlined,
+                    label: 'Reportar avistamiento',
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => SightingFlowPage(report: report),
+                      ),
+                    ),
+                  ),
+                if (canViewSightings)
+                  _ActionButton(
+                    icon: Icons.visibility_rounded,
+                    label: 'Ver avistamientos',
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => ReportSightingsPage(report: report),
+                      ),
+                    ),
                   ),
                 _ActionButton(
                   icon: Icons.map_outlined,

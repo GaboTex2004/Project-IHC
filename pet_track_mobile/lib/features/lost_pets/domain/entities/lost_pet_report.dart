@@ -30,6 +30,8 @@ class LostPetReport extends Equatable {
   String get displayName => name.trim().isEmpty ? 'Sin nombre' : name;
   bool get isActive => status == 'ACTIVE';
   bool get isResolved => status == 'RESOLVED';
+  bool canReportSightingBy(int currentUserId) =>
+      reportType == 'LOST' && isActive && userId != currentUserId;
 
   @override
   List<Object> get props => [
