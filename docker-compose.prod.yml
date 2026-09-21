@@ -19,7 +19,7 @@ services:
   pet_track_backend:
     build:
       context: ./pet_track_backend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     restart: unless-stopped
     env_file:
       - ./pet_track_backend/.env
@@ -28,21 +28,23 @@ services:
       DB_PORT: 5432
     volumes:
       - media-files:/app/media
+      - static-files:/app/staticfiles
     depends_on:
       pet_track_db:
         condition: service_healthy
     networks:
       - mi-red
 
-  nginx:
+  pet_track_nginx:
     build:
       context: ./nginx
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     restart: unless-stopped
     ports:
       - '80:80'
     volumes:
-      - media-files:/app/media:ro
+      - media-files:/app/media
+      - static-files:/app/staticfiles
     depends_on:
       - pet_track_backend
     networks:
@@ -51,6 +53,7 @@ services:
 volumes:
   postgres-prod-data:
   media-files:
+  static-files:
 
 networks:
   mi-red:

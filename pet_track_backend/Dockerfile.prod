@@ -1,0 +1,38 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+RUN chmod +x entrypoint.sh
+
+RUN adduser --disabled-password --gecos '' appuser
+
+# Crear las carpetas de estáticos y media
+RUN mkdir -p /app/staticfiles /app/media
+
+# Asignar permisos completos a las carpetas
+RUN chmod -R 777 /app/staticfiles /app/media
+
+USER appuser
+
+EXPOSE 8000
+
+# Crear las carpetas de estáticos y media
+RUN mkdir -p /app/staticfiles /app/media
+
+# Asignar permisos completos a las carpetas
+RUN chmod -R 777 /app/staticfiles /app/media
+
+ENTRYPOINT ["./entrypoint.sh"]

@@ -10,4 +10,9 @@
 
 ---
 
-Los documentos hechos en el proyecto estan en la carpeta `docs`
+Los documentos hechos en el proyecto estan en la carpeta `./docs`
+
+variables de entorno necesarias:
+./.env
+./pet_track_backend/.env
+./pet_track_mobile/.env
