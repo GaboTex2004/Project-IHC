@@ -11,3 +11,10 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+# Registrar los modelos definidos en módulos separados para que
+# Django los descubra durante la inicialización de la aplicación.
+from .lost_pet_model import LostPetReportModel
+from .chat_models import ConversationModel, MessageModel
+from .sighting_model import SightingModel
+from .report_visual_features_model import ReportVisualFeaturesModel

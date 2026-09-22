@@ -18,4 +18,8 @@ abstract class LostPetRepository {
   });
   Future<Either<Failure, LostPetReport>> resolveReport(int reportId);
   Future<Either<Failure, void>> deleteReport(int reportId);
+  Future<Either<Failure, Map<String, dynamic>>> analyzeReport(int reportId);
+  Future<Either<Failure, Map<String, dynamic>>> findReportMatches(
+    int reportId,
+  );
 }

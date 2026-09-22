@@ -24,6 +24,11 @@ class DjangoLostPetReportRepository(LostPetReportRepository):
         except LostPetReportModel.DoesNotExist:
             return None
 
+    def find_model_by_id(self, report_id: int):
+        return LostPetReportModel.objects.filter(
+            id=report_id
+        ).first()
+
     def find_by_user(self, user_id: int) -> List[LostPetReport]:
         reports = LostPetReportModel.objects.filter(user_id=user_id)
         return [self._to_entity(r) for r in reports]

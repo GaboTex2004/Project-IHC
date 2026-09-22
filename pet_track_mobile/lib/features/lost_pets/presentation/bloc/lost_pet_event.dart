@@ -66,3 +66,21 @@ class CreateReport extends LostPetEvent {
     reportType,
   ];
 }
+
+class AnalyzeReport extends LostPetEvent {
+  final int reportId;
+
+  const AnalyzeReport({required this.reportId});
+
+  @override
+  List<Object> get props => [reportId];
+}
+
+class FindReportMatches extends LostPetEvent {
+  final int reportId;
+
+  const FindReportMatches({required this.reportId});
+
+  @override
+  List<Object> get props => [reportId];
+}

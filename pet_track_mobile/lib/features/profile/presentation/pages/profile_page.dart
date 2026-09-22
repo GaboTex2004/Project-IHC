@@ -12,6 +12,7 @@ import '../../../lost_pets/presentation/pages/my_reports_page.dart';
 import '../../../lost_pets/presentation/bloc/lost_pet_bloc.dart';
 import '../../../lost_pets/presentation/bloc/lost_pet_event.dart';
 import '../../../lost_pets/presentation/widgets/pet_track_header.dart';
+import '../../../lost_pets/presentation/pages/ai_recognition_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -188,7 +189,13 @@ class ProfilePage extends StatelessWidget {
               _ProfileMenuItem(
                 icon: Icons.auto_awesome_outlined,
                 title: 'Reconocimiento IA',
-                onTap: () => _comingSoon(context),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const AiRecognitionPage(),
+                    ),
+                  );
+                },
               ),
               _ProfileMenuItem(
                 icon: Icons.settings_outlined,

@@ -137,7 +137,36 @@ class LostPetRemoteDataSource {
       statusCode: response.statusCode,
     );
   }
+  
+  Future<Map<String, dynamic>> analyzeReport(int reportId) async {
+    final headers = await _authHeaders();
+    headers['Content-Type'] = 'application/json';
 
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/reports/$reportId/analyze/'),
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+
+      if (data is Map<String, dynamic>) {
+        return data;
+      }
+
+      throw ServerException(
+        message: 'El servidor devolvió un análisis inválido.',
+      );
+    }
+
+    throw ServerException(
+      message: _errorMessage(
+        response,
+        'No se pudo analizar la fotografía.',
+      ),
+      statusCode: response.statusCode,
+    );
+  }
   String _errorMessage(http.Response response, String fallback) {
     try {
       final body = jsonDecode(response.body);
@@ -157,5 +186,37 @@ class LostPetRemoteDataSource {
       return fallback;
     }
     return fallback;
+  }
+  
+  Future<Map<String, dynamic>> findReportMatches(int reportId) async {
+    final headers = await _authHeaders();
+    headers['Content-Type'] = 'application/json';
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/reports/$reportId/matches/'),
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+
+      if (data is Map<String, dynamic> &&
+          data['matches'] is List &&
+          data['total_matches'] is int) {
+        return data;
+      }
+
+      throw ServerException(
+        message: 'El servidor devolvió coincidencias inválidas.',
+      );
+    }
+
+    throw ServerException(
+      message: _errorMessage(
+        response,
+        'No se pudieron buscar coincidencias.',
+      ),
+      statusCode: response.statusCode,
+    );
   }
 }

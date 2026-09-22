@@ -7,6 +7,9 @@ import '../../domain/usecases/resolve_report_usecase.dart';
 import '../../../../core/errors/failures.dart';
 import 'lost_pet_event.dart';
 import 'lost_pet_state.dart';
+import '../../domain/usecases/analyze_report_usecase.dart';
+import '../../domain/usecases/find_report_matches_usecase.dart';
+import '../../domain/entities/lost_pet_report.dart';
 
 class LostPetBloc extends Bloc<LostPetEvent, LostPetState> {
   final ListReportsUseCase listReportsUseCase;
@@ -14,19 +17,24 @@ class LostPetBloc extends Bloc<LostPetEvent, LostPetState> {
   final GetReportDetailUseCase getReportDetailUseCase;
   final GetMyReportsUseCase getMyReportsUseCase;
   final ResolveReportUseCase resolveReportUseCase;
-
+  final AnalyzeReportUseCase analyzeReportUseCase;
+  final FindReportMatchesUseCase findReportMatchesUseCase;
   LostPetBloc({
     required this.listReportsUseCase,
     required this.createReportUseCase,
     required this.getReportDetailUseCase,
     required this.getMyReportsUseCase,
     required this.resolveReportUseCase,
+    required this.analyzeReportUseCase,
+    required this.findReportMatchesUseCase,
   }) : super(const LostPetInitial()) {
     on<LoadReports>(_onLoadReports);
     on<LoadReportDetail>(_onLoadReportDetail);
     on<LoadMyReports>(_onLoadMyReports);
     on<ResolveReport>(_onResolveReport);
     on<CreateReport>(_onCreateReport);
+    on<AnalyzeReport>(_onAnalyzeReport);
+    on<FindReportMatches>(_onFindReportMatches);
   }
 
   Future<void> _onLoadReports(
@@ -119,6 +127,117 @@ class LostPetBloc extends Bloc<LostPetEvent, LostPetState> {
     result.fold(
       (failure) => emit(LostPetError(message: failure.message)),
       (report) => emit(LostPetCreated(report: report)),
+    );
+  }
+
+  Future<void> _onAnalyzeReport(
+    AnalyzeReport event,
+    Emitter<LostPetState> emit,
+  ) async {
+    final currentState = state;
+
+    // Conservamos los reportes que ya aparecen en pantalla.
+    final reports = switch (currentState) {
+      MyReportsLoaded() => currentState.reports,
+      ReportAnalysisLoaded() => currentState.reports,
+      ReportAnalysisError() => currentState.reports,
+      ReportMatchesLoading() => currentState.reports,
+      ReportMatchesLoaded() => currentState.reports,
+      ReportMatchesError() => currentState.reports,
+      _ => null,
+    };
+
+    if (reports == null) return;
+
+    // Evitamos analizar un reporte que no está en la lista válida.
+    final canAnalyze = reports.any(
+      (report) =>
+          report.id == event.reportId &&
+          const {'LOST', 'FOUND', 'HOMELESS'}.contains(report.reportType) &&
+          report.isActive,
+    );
+
+    if (!canAnalyze) return;
+
+    emit(
+      ReportAnalysisLoading(
+        reports: reports,
+        reportId: event.reportId,
+      ),
+    );
+
+    final result = await analyzeReportUseCase(event.reportId);
+
+    result.fold(
+      (failure) => emit(
+        ReportAnalysisError(
+          reports: reports,
+          reportId: event.reportId,
+          message: failure.message,
+        ),
+      ),
+      (analysis) => emit(
+        ReportAnalysisLoaded(
+          reports: reports,
+          reportId: event.reportId,
+          analysis: analysis,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onFindReportMatches(
+    FindReportMatches event,
+    Emitter<LostPetState> emit,
+  ) async {
+    final currentState = state;
+
+    final List<LostPetReport> reports;
+    final Map<String, dynamic> analysis;
+
+    if (currentState is ReportAnalysisLoaded &&
+        currentState.reportId == event.reportId) {
+      reports = currentState.reports;
+      analysis = currentState.analysis;
+    } else if (currentState is ReportMatchesError &&
+        currentState.reportId == event.reportId) {
+      reports = currentState.reports;
+      analysis = currentState.analysis;
+    } else if (currentState is ReportMatchesLoaded &&
+        currentState.reportId == event.reportId) {
+      reports = currentState.reports;
+      analysis = currentState.analysis;
+    } else {
+      return;
+    }
+
+    emit(
+      ReportMatchesLoading(
+        reports: reports,
+        reportId: event.reportId,
+        analysis: analysis,
+      ),
+    );
+
+    final result = await findReportMatchesUseCase(event.reportId);
+
+    result.fold(
+      (failure) => emit(
+        ReportMatchesError(
+          reports: reports,
+          reportId: event.reportId,
+          analysis: analysis,
+          message: failure.message,
+        ),
+      ),
+      (matches) => emit(
+        ReportMatchesLoaded(
+          reports: reports,
+          reportId: event.reportId,
+          analysis: analysis,
+          matches: matches,
+        ),
+      ),
     );
   }
 }

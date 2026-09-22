@@ -15,6 +15,7 @@ env = environ.Env(
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+GEMINI_API_KEY = env('GEMINI_API_KEY', default='')
 
 SECRET_KEY = env('SECRET_KEY', default='django-insecure-^jsibgh7^-idv5884uui9@-3ctw861tldq-!)^nop7=354^)jn')
 

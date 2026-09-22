@@ -86,9 +86,39 @@ class LostPetRepositoryImpl implements LostPetRepository {
       return Left(ServerFailure(message: e.message));
     }
   }
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> analyzeReport(
+    int reportId,
+  ) async {
+    try {
+      final result = await remoteDataSource.analyzeReport(reportId);
+      return Right(result);
+    } on ServerException catch (e) {
+      if (e.statusCode == 404) {
+        return Left(NotFoundFailure(message: e.message));
+      }
 
+      return Left(ServerFailure(message: e.message));
+    }
+  }
   @override
   Future<Either<Failure, void>> deleteReport(int reportId) async {
     return const Right(null);
+  }
+  
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> findReportMatches(
+    int reportId,
+  ) async {
+    try {
+      final result = await remoteDataSource.findReportMatches(reportId);
+      return Right(result);
+    } on ServerException catch (e) {
+      if (e.statusCode == 404) {
+        return Left(NotFoundFailure(message: e.message));
+      }
+
+      return Left(ServerFailure(message: e.message));
+    }
   }
 }

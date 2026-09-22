@@ -31,7 +31,8 @@ import '../features/sightings/domain/usecases/create_sighting_usecase.dart';
 import '../features/sightings/domain/usecases/get_current_position_usecase.dart';
 import '../features/sightings/domain/usecases/get_report_sightings_usecase.dart';
 import '../features/sightings/presentation/bloc/sighting_bloc.dart';
-
+import '../features/lost_pets/domain/usecases/analyze_report_usecase.dart';
+import '../features/lost_pets/domain/usecases/find_report_matches_usecase.dart';
 final sl = GetIt.instance;
 
 void init() {
@@ -75,6 +76,12 @@ void init() {
   sl.registerLazySingleton<ResolveReportUseCase>(
     () => ResolveReportUseCase(repository: sl()),
   );
+  sl.registerLazySingleton<AnalyzeReportUseCase>(
+    () => AnalyzeReportUseCase(sl()),
+  );
+  sl.registerLazySingleton<FindReportMatchesUseCase>(
+    () => FindReportMatchesUseCase(sl()),
+  );
   sl.registerFactory<LostPetBloc>(
     () => LostPetBloc(
       listReportsUseCase: sl(),
@@ -82,6 +89,8 @@ void init() {
       getReportDetailUseCase: sl(),
       getMyReportsUseCase: sl(),
       resolveReportUseCase: sl(),
+      analyzeReportUseCase: sl(),
+      findReportMatchesUseCase: sl(),
     ),
   );
 

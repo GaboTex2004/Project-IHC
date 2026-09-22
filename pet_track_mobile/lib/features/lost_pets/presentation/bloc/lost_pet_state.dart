@@ -87,3 +87,95 @@ class LostPetError extends LostPetState {
   @override
   List<Object> get props => [message];
 }
+
+class ReportAnalysisLoading extends LostPetState {
+  final List<LostPetReport> reports;
+  final int reportId;
+
+  const ReportAnalysisLoading({
+    required this.reports,
+    required this.reportId,
+  });
+
+  @override
+  List<Object> get props => [reports, reportId];
+}
+
+class ReportAnalysisLoaded extends LostPetState {
+  final List<LostPetReport> reports;
+  final int reportId;
+  final Map<String, dynamic> analysis;
+
+  const ReportAnalysisLoaded({
+    required this.reports,
+    required this.reportId,
+    required this.analysis,
+  });
+
+  @override
+  List<Object> get props => [reports, reportId, analysis];
+}
+
+class ReportAnalysisError extends LostPetState {
+  final List<LostPetReport> reports;
+  final int reportId;
+  final String message;
+
+  const ReportAnalysisError({
+    required this.reports,
+    required this.reportId,
+    required this.message,
+  });
+
+  @override
+  List<Object> get props => [reports, reportId, message];
+}
+
+class ReportMatchesLoading extends LostPetState {
+  final List<LostPetReport> reports;
+  final int reportId;
+  final Map<String, dynamic> analysis;
+
+  const ReportMatchesLoading({
+    required this.reports,
+    required this.reportId,
+    required this.analysis,
+  });
+
+  @override
+  List<Object> get props => [reports, reportId, analysis];
+}
+
+class ReportMatchesLoaded extends LostPetState {
+  final List<LostPetReport> reports;
+  final int reportId;
+  final Map<String, dynamic> analysis;
+  final Map<String, dynamic> matches;
+
+  const ReportMatchesLoaded({
+    required this.reports,
+    required this.reportId,
+    required this.analysis,
+    required this.matches,
+  });
+
+  @override
+  List<Object> get props => [reports, reportId, analysis, matches];
+}
+
+class ReportMatchesError extends LostPetState {
+  final List<LostPetReport> reports;
+  final int reportId;
+  final Map<String, dynamic> analysis;
+  final String message;
+
+  const ReportMatchesError({
+    required this.reports,
+    required this.reportId,
+    required this.analysis,
+    required this.message,
+  });
+
+  @override
+  List<Object> get props => [reports, reportId, analysis, message];
+}
