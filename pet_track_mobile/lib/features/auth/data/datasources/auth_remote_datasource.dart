@@ -10,8 +10,8 @@ class AuthRemoteDataSource {
   final TokenStorage _tokenStorage;
 
   AuthRemoteDataSource({String? baseUrl, TokenStorage? tokenStorage})
-      : baseUrl = baseUrl ?? dotenv.env['BASE_URL'] ?? 'http://localhost:8000',
-        _tokenStorage = tokenStorage ?? TokenStorage();
+    : baseUrl = baseUrl ?? dotenv.env['BASE_URL'] ?? '',
+      _tokenStorage = tokenStorage ?? TokenStorage();
 
   Future<AuthModel> login(String username, String password) async {
     final response = await http.post(
@@ -22,16 +22,26 @@ class AuthRemoteDataSource {
 
     if (response.statusCode == 200) {
       final model = AuthModel.fromJson(jsonDecode(response.body));
-      await _tokenStorage.saveTokens(access: model.access, refresh: model.refresh);
+      await _tokenStorage.saveTokens(
+        access: model.access,
+        refresh: model.refresh,
+      );
       return model;
     } else {
       final error = jsonDecode(response.body);
-      throw ServerException(message: error['error'] ?? 'Error al iniciar sesión');
+      throw ServerException(
+        message: error['error'] ?? 'Error al iniciar sesión',
+      );
     }
   }
 
-  Future<AuthModel> register(String username, String email, String password,
-      {String firstName = '', String lastName = ''}) async {
+  Future<AuthModel> register(
+    String username,
+    String email,
+    String password, {
+    String firstName = '',
+    String lastName = '',
+  }) async {
     final response = await http.post(
       Uri.parse('$baseUrl/api/auth/register/'),
       headers: {'Content-Type': 'application/json'},
@@ -46,11 +56,16 @@ class AuthRemoteDataSource {
 
     if (response.statusCode == 201) {
       final model = AuthModel.fromJson(jsonDecode(response.body));
-      await _tokenStorage.saveTokens(access: model.access, refresh: model.refresh);
+      await _tokenStorage.saveTokens(
+        access: model.access,
+        refresh: model.refresh,
+      );
       return model;
     } else {
       final error = jsonDecode(response.body);
-      throw ServerException(message: error['error'] ?? 'Error al registrar usuario');
+      throw ServerException(
+        message: error['error'] ?? 'Error al registrar usuario',
+      );
     }
   }
 

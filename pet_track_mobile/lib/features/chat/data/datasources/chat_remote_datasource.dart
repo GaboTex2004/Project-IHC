@@ -10,7 +10,7 @@ class ChatRemoteDataSource {
   final String baseUrl;
   final TokenStorage tokenStorage;
   ChatRemoteDataSource({String? baseUrl, required this.tokenStorage})
-    : baseUrl = baseUrl ?? dotenv.env['BASE_URL'] ?? 'http://localhost:8000';
+    : baseUrl = baseUrl ?? dotenv.env['BASE_URL'] ?? '';
 
   Future<Map<String, String>> _headers() async {
     final token = await tokenStorage.getAccessToken();

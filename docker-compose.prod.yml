@@ -1,3 +1,5 @@
+name: pet_track
+
 services:
   pet_track_db:
     image: postgres:16-alpine
@@ -13,13 +15,15 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
+
     networks:
       - mi-red
-
+  
   pet_track_backend:
     build:
       context: ./pet_track_backend
       dockerfile: Dockerfile.prod
+    image: sebastiandevjs/pet_track_backend:lastest
     restart: unless-stopped
     env_file:
       - ./pet_track_backend/.env
@@ -32,6 +36,16 @@ services:
     depends_on:
       pet_track_db:
         condition: service_healthy
+    networks:
+      - mi-red
+
+  pet_track_mobile:
+    build:
+      context: ./pet_track_mobile
+      dockerfile: Dockerfile.prod
+    env_file: ./pet_track_mobile/.env
+    image: sebastiandevjs/pet_track_mobile:latest
+    restart: unless-stopped
     networks:
       - mi-red
 

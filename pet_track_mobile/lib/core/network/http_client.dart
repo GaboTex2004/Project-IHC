@@ -8,32 +8,38 @@ class HttpClient {
   late final Dio _dio;
 
   HttpClient({String? baseUrl}) {
-    final url = baseUrl ?? dotenv.env['BASE_URL'] ?? 'http://localhost:8000';
-    
-    _dio = Dio(BaseOptions(
-      baseUrl: url,
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    ));
+    final url = baseUrl ?? dotenv.env['BASE_URL'] ?? '';
 
-    _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
-        debugPrint('REQUEST: ${options.method} ${options.uri}');
-        handler.next(options);
-      },
-      onResponse: (response, handler) {
-        debugPrint('RESPONSE: ${response.statusCode} ${response.requestOptions.uri}');
-        handler.next(response);
-      },
-      onError: (error, handler) {
-        debugPrint('ERROR: ${error.message} ${error.requestOptions.uri}');
-        handler.next(error);
-      },
-    ));
+    _dio = Dio(
+      BaseOptions(
+        baseUrl: url,
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ),
+    );
+
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          debugPrint('REQUEST: ${options.method} ${options.uri}');
+          handler.next(options);
+        },
+        onResponse: (response, handler) {
+          debugPrint(
+            'RESPONSE: ${response.statusCode} ${response.requestOptions.uri}',
+          );
+          handler.next(response);
+        },
+        onError: (error, handler) {
+          debugPrint('ERROR: ${error.message} ${error.requestOptions.uri}');
+          handler.next(error);
+        },
+      ),
+    );
   }
 
   void setToken(String token) {
@@ -44,7 +50,10 @@ class HttpClient {
     _dio.options.headers.remove('Authorization');
   }
 
-  Future<dynamic> get(String path, {Map<String, dynamic>? queryParameters}) async {
+  Future<dynamic> get(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
     try {
       final response = await _dio.get(path, queryParameters: queryParameters);
       return response.data;

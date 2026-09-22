@@ -15,7 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN chmod +x entrypoint.sh
+RUN chmod +x entrypoint.dev.sh
 
 RUN adduser --disabled-password --gecos '' appuser
 
@@ -29,5 +29,11 @@ USER appuser
 
 EXPOSE 8000
 
+# Crear las carpetas de estáticos y media
+RUN mkdir -p /app/staticfiles /app/media
 
-ENTRYPOINT ["./entrypoint.sh"]
+# Asignar permisos completos a las carpetas
+RUN chmod -R 777 /app/staticfiles /app/media
+
+
+ENTRYPOINT ["./entrypoint.dev.sh"]

@@ -31,7 +31,7 @@ class LostPetReportModel {
   static String _fullPhotoUrl(String photo) {
     if (photo.isEmpty) return photo;
     if (photo.startsWith('http')) return photo;
-    final baseUrl = dotenv.env['BASE_URL'] ?? 'http://localhost:8000';
+    final baseUrl = dotenv.env['BASE_URL'] ?? '';
     return '$baseUrl$photo';
   }
 

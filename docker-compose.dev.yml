@@ -34,7 +34,7 @@ services:
       - static-files:/app/staticfiles
 
     ports:
-      - '8000:8000'
+      - '${SERVER_PORT}:${SERVER_PORT}'
     networks:
       - mi-red # Conectar a la misma red para que se puedan comunicar
     environment:

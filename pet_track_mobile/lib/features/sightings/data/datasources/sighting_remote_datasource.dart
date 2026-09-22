@@ -11,7 +11,7 @@ class SightingRemoteDataSource {
   final String baseUrl;
   final TokenStorage tokenStorage;
   SightingRemoteDataSource({String? baseUrl, required this.tokenStorage})
-    : baseUrl = baseUrl ?? dotenv.env['BASE_URL'] ?? 'http://localhost:8000';
+    : baseUrl = baseUrl ?? dotenv.env['BASE_URL'] ?? '';
 
   Future<List<SightingModel>> getReportSightings(int reportId) async {
     final token = await tokenStorage.getAccessToken();

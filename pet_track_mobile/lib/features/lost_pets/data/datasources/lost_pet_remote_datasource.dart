@@ -10,7 +10,7 @@ class LostPetRemoteDataSource {
   final TokenStorage _tokenStorage;
 
   LostPetRemoteDataSource({String? baseUrl, TokenStorage? tokenStorage})
-    : baseUrl = baseUrl ?? dotenv.env['BASE_URL'] ?? 'http://localhost:8000',
+    : baseUrl = baseUrl ?? dotenv.env['BASE_URL'] ?? '',
       _tokenStorage = tokenStorage ?? TokenStorage();
 
   Future<Map<String, String>> _authHeaders() async {
@@ -137,7 +137,7 @@ class LostPetRemoteDataSource {
       statusCode: response.statusCode,
     );
   }
-  
+
   Future<Map<String, dynamic>> analyzeReport(int reportId) async {
     final headers = await _authHeaders();
     headers['Content-Type'] = 'application/json';
@@ -160,13 +160,11 @@ class LostPetRemoteDataSource {
     }
 
     throw ServerException(
-      message: _errorMessage(
-        response,
-        'No se pudo analizar la fotografía.',
-      ),
+      message: _errorMessage(response, 'No se pudo analizar la fotografía.'),
       statusCode: response.statusCode,
     );
   }
+
   String _errorMessage(http.Response response, String fallback) {
     try {
       final body = jsonDecode(response.body);
@@ -187,7 +185,7 @@ class LostPetRemoteDataSource {
     }
     return fallback;
   }
-  
+
   Future<Map<String, dynamic>> findReportMatches(int reportId) async {
     final headers = await _authHeaders();
     headers['Content-Type'] = 'application/json';
@@ -212,10 +210,7 @@ class LostPetRemoteDataSource {
     }
 
     throw ServerException(
-      message: _errorMessage(
-        response,
-        'No se pudieron buscar coincidencias.',
-      ),
+      message: _errorMessage(response, 'No se pudieron buscar coincidencias.'),
       statusCode: response.statusCode,
     );
   }
