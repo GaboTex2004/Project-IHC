@@ -18,8 +18,16 @@ COPY . .
 RUN chmod +x entrypoint.sh
 
 RUN adduser --disabled-password --gecos '' appuser
+
+# Crear las carpetas de estáticos y media
+RUN mkdir -p /app/staticfiles /app/media
+
+# Asignar permisos completos a las carpetas
+RUN chmod -R 777 /app/staticfiles /app/media
+
 USER appuser
 
 EXPOSE 8000
+
 
 ENTRYPOINT ["./entrypoint.sh"]

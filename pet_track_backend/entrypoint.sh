@@ -2,7 +2,8 @@
 set -e
 
 echo "Esperando a que PostgreSQL este listo..."
-while ! pg_isready -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_NAME; do
+while ! python -c "import socket; s = socket.socket(); s.settimeout(1); s.connect(('$DB_HOST', int('$DB_PORT')))" 2>/dev/null; do
+  echo "Esperando..."
   sleep 1
 done
 
