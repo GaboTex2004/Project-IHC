@@ -23,7 +23,7 @@ services:
     build:
       context: ./pet_track_backend
       dockerfile: Dockerfile.prod
-    image: sebastiandevjs/pet_track_backend:lastest
+    image: sebastiandevjs/pet_track_backend:latest
     restart: unless-stopped
     env_file:
       - ./pet_track_backend/.env
